@@ -1,0 +1,40 @@
+
+
+<form class="example-form" [formGroup]="formularioGenerar"  style="text-align: center;">
+  <h2 mat-dialog-title class="custom-dialog-title">Generar Codigo De Barra</h2>
+
+<div mat-dialog-content>
+
+  <mat-form-field class="small-input" >
+    <mat-label># de codigo de barra</mat-label>
+    <input matInput [value]="data.codigo" disabled>
+</mat-form-field>
+
+<mat-form-field class="small-input">
+    <mat-label>Nombre del producto</mat-label>
+    <input matInput [value]="data.nombre" disabled>
+</mat-form-field>
+
+
+
+
+</div>
+
+<mat-form-field class="minimalist-monto" appearance="fill" >
+  <mat-label>Cantidad a Generar</mat-label>
+  <input matInput   formControlName="cantidad" (input)="('cantidad')"
+    type="number" placeholder="Ingrese la cantidad a generar" required>
+
+
+</mat-form-field>
+
+
+
+<button mat-raised-button mat-dialog-close class="agregar"  (click)="generarEtiquetaCodigoBarras()">
+  <mat-icon matSuffix  class="fas fa-barcode"></mat-icon>
+  Generar Etiqueta
+</button>
+
+
+
+</form>

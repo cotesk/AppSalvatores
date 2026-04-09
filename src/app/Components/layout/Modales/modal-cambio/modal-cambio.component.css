@@ -1,0 +1,266 @@
+.formulario-producto-venta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.dialog-content {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-field, .minimalist-producto, .minimalist-cantidad, .minimalist-motivo, .minimalist-pago, .minimalist-Unidadpago, .minimalist-estado, .minimalist-TipoCambio {
+  width: 100%;
+}
+
+.table-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.table-wrapper {
+  width: 70%;
+}
+
+.producto-table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.producto-table th, .producto-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.total {
+  text-align: center;
+  color: black;
+}
+
+.image-wrapper {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-wrapper img {
+  max-width: 250px;
+  max-height: 250px;
+}
+
+button.agregar {
+  background-color: #3351aa;
+  color: #fff;
+
+
+}
+.button-container {
+  display: flex;            /* Organiza los botones en una fila */
+  justify-content: space-between; /* Coloca espacio entre los botones */
+  gap: 16px;                /* Espacio entre los botones */
+  margin-top: 16px;         /* Margen superior opcional para separarlos del contenido */
+}
+
+.button-container button {
+  flex: 1;                  /* Los botones ocupan el mismo tamaño por igual */
+  max-width: 150px;         /* Establece un tamaño máximo para los botones */
+}
+
+
+button.agregar2 {
+  background-color: #3351aa;
+  color: #fff;
+
+  /* width: 14%; */
+}
+
+
+button.agregar2:hover {
+  background-color: rgb(79, 96, 113);
+  /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+
+button.agregar2[disabled] {
+  background-color: #ccc;
+  /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666;
+  /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.agregar:hover {
+  background-color: rgb(79, 96, 113);
+  /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+
+button.agregar[disabled] {
+  background-color: #ccc;
+  /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666;
+  /* Color del texto en gris cuando está deshabilitado */
+}
+
+
+.separator {
+  border: none;
+  border-top: 1px solid red;
+  /* Color rojo */
+  margin: 5px 0;
+  /* Espaciado opcional */
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc;
+  /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}
+
+button.eliminar {
+  background-color: #f44336;
+  color: #fff;
+  /* Color del texto del botón Cancelar */
+
+}
+
+button.eliminar:hover {
+  background-color: #9e3434;
+  /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+
+button.eliminar[disabled] {
+  background-color: #ccc;
+  /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666;
+  /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.eliminar[disabled]:hover {
+  background-color: #ccc;
+  /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}
+
+.icon-green {
+  color: rgb(0, 152, 0);
+}
+
+.icon-red {
+  color: red;
+}
+
+.icon-boy {
+  color: blue;
+  /* Define el color para el ícono de niño */
+}
+
+.icon-girl {
+  color: rgb(245, 135, 154);
+  /* Define el color para el ícono de niña */
+}
+
+.icon-undefined {
+  color: gray;
+  /* Define el color para el ícono de no definido */
+}
+
+.icon-blue {
+  color: #007bff;
+}
+
+.icon-orange {
+  color: #fd7e14;
+}
+
+.icon-purple {
+  color: #6f42c1;
+}
+
+.icon-yellow {
+  color: #ffc107;
+}
+
+.icon-black {
+  color: #343a40;
+}
+.total-amount {
+  color: red; /* Establece el color rojo para el número */
+  font-weight: bold; /* Opcional: agrega negrita al número */
+}
+
+
+/* Contenedor general */
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Una sola columna en dispositivos móviles */
+  gap: 16px; /* Espacio entre los campos */
+  padding: 16px;
+}
+
+/* Fila de campos */
+.form-row {
+  display: flex;
+  gap: 16px; /* Espacio entre los campos */
+}
+
+/* Campos de formulario */
+.form-field {
+  flex: 1; /* Todos los campos comparten el mismo espacio */
+}
+
+/* Campo de 'Motivo del cambio' se expande */
+.form-row .form-field textarea {
+  flex-grow: 2; /* Hace que el campo 'Motivo del cambio' se expanda */
+}
+
+.custom-dialog-title {
+  font-size: 34px;
+  text-align: center;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+@media (max-width: 768px) {
+  .custom-dialog-title {
+    text-align: left;  /* Alineación a la izquierda en vista móvil */
+    white-space: normal; /* Permite que el texto se ajuste y se vea a lo largo */
+    font-size: 16px; /* Tamaño de fuente más pequeño en dispositivos móviles */
+  }
+  .form-container {
+    grid-template-columns: 1fr; /* Una columna */
+  }
+
+  .form-row {
+    display: block; /* Los campos se apilan en fila */
+  }
+
+  .form-field {
+    margin-bottom: 16px; /* Añadir espacio entre campos cuando están apilados */
+  }
+  .dialog-content {
+    padding: 10px;
+  }
+
+  .table-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .table-wrapper {
+    width: 100%;
+  }
+
+  .image-wrapper {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .producto-table th, .producto-table td {
+    font-size: 12px;
+  }
+
+  .total p {
+    font-size: 14px;
+  }
+}

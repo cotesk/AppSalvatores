@@ -1,0 +1,300 @@
+.custom-panel {
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.detalle-info {
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.minimal-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.minimal-table th {
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+}
+
+.minimal-table td {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-warn {
+  color: #ff9800;
+}
+
+.text-danger {
+  color: red;
+}
+
+.text-neutro {
+  color: gray;
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid red;
+  /* Color rojo */
+  margin: 5px 0;
+  /* Espaciado opcional */
+}
+
+.no-pedidos {
+  text-align: center;
+  font-style: italic;
+  color: gray;
+  margin-top: 30px;
+}
+
+.paginacion-pedidos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.paginacion-btn {
+  color: #1976d2;
+  /* azul angular material */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 50%;
+}
+
+.paginacion-btn:hover:not(:disabled) {
+  background-color: rgba(25, 118, 210, 0.1);
+  /* azul suave en hover */
+  color: #0d47a1;
+  /* azul más oscuro */
+}
+
+.paginacion-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.paginacion-estado {
+  font-size: 15px;
+  color: #444;
+  margin: 0 5px;
+}
+
+
+.filtro-pedidos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+   justify-content: center; /* Centra horizontalmente */
+  align-items: center;     /* Centra verticalmente */
+  margin-bottom: 20px;
+}
+
+button.agregar {
+  background-color: #3351aa;
+  /* Fondo del botón Cancelar */
+  color: #fff;
+  /* Color del texto del botón Cancelar */
+  width: 230px;
+}
+
+button.agregar:hover {
+  background-color: rgb(79, 96, 113);
+  /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+
+button.agregar[disabled] {
+  background-color: #ccc;
+  /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666;
+  /* Color del texto en gris cuando está deshabilitado */
+}
+
+::ng-deep .mat-mdc-paginator-range-actions {
+  /* background-color: #2196f3;
+  color: white ; */
+  border-radius: 30px;
+
+}
+
+::ng-deep .mat-mdc-paginator-icon {
+
+  fill: #2196f3 !important;
+}
+
+::ng-deep .mat-mdc-icon-button[disabled] .mat-mdc-paginator-icon {
+  fill: rgb(169, 169, 169) !important;
+}
+
+
+/* Estilos para los datepickers */
+.mat-datepicker-toggle {
+  color: #2196F3;
+  /* Color del icono del datepicker */
+}
+
+::ng-deep .mat-calendar-previous-button,
+::ng-deep .mat-calendar-next-button {
+  color: white !important;
+  /* Cambia el color de las flechas */
+  fill: white !important;
+  /* Asegura que el SVG también sea blanco */
+}
+
+/* Opcional: también puedes hacer el hover blanco */
+::ng-deep .mat-calendar-previous-button:hover,
+::ng-deep .mat-calendar-next-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* el color para los dias de la semana */
+::ng-deep .mat-calendar-table-header th {
+  color: black !important;
+  font-weight: bold;
+  /* opcional: los hace más visibles */
+}
+
+
+::ng-deep .mat-calendar-header {
+  margin: 0;
+  background-color: #2c3e50 !important;
+}
+
+::ng-deep .mat-calendar-arrow {
+  fill: rgb(255, 255, 255) !important;
+}
+
+/* el color en el mes */
+
+::ng-deep .mat-calendar-body-label {
+  color: rgb(26, 25, 25) !important;
+}
+
+::ng-deep .mat-calendar-table-header {
+  color: rgb(254, 6, 6) !important;
+}
+
+::ng-deep .mat-mdc-button.mat-unthemed {
+  --mdc-text-button-label-text-color: rgb(255, 255, 255);
+}
+
+.icon-green {
+  color: green;
+}
+
+.icon-red {
+  color: red;
+}
+
+.icon-naraja {
+  color: rgb(217, 125, 33);
+}
+
+.icon-blue {
+  color: rgb(60, 60, 175);
+}
+
+.icon-orange {
+  color: #ff9800;
+}
+
+.icon-purple {
+  color: #9c27b0;
+}
+
+
+.footer {
+ position: relative;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  background-color: #2c3e50;
+  padding: 10px;
+  left: -20px;
+  /* Salir del contenedor principal */
+  width: calc(100% + 20px);
+}
+
+.select {
+  width: 270px;
+
+}
+
+
+@media (max-width: 768px) {
+
+   .footer {
+
+  font-size: 10px;
+    position: relative;
+    left: -20px;
+    /* Salir del contenedor principal */
+    width: calc(97% + 31px);
+    /* Hacerlo más largo que el mat-card */
+    background-color: #2c3e50;
+    /* Cambiar color si es necesario */
+  }
+
+
+    .filtro-pedidos {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtro-pedidos mat-form-field,
+  .filtro-pedidos button.agregar {
+    width: 100% !important;
+  }
+
+  .select {
+    width: 100% !important;
+  }
+
+   .minimal-table {
+    overflow-x: auto;
+    display: block;
+  }
+
+  .minimal-table table {
+    min-width: 600px;
+  }
+
+  .minimal-table th,
+  .minimal-table td {
+    white-space: nowrap;
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .detalle-info {
+    font-size: 12px;
+    padding: 8px;
+  }
+  .paginacion-estado {
+    font-size: 13px;
+  }
+
+  .paginacion-btn {
+    width: 36px;
+    height: 36px;
+  }
+   h2 {
+    font-size: 18px;
+    text-align: center;
+  }
+}

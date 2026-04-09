@@ -1,0 +1,139 @@
+button.ver {
+  /* background-color: #9b8f67;  */
+  color: #73673e; /* Color del texto del botón Cancelar */
+}
+button.ver:hover {
+  background-color:  #e0ddbf; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+/* En tu archivo de estilos CSS */
+.texto-rojo {
+  color: red;
+  vertical-align: top;
+}
+
+.texto-verde {
+  color: green;
+  vertical-align: top;
+}
+.mat-paginator-page-size-label {
+  display: none;
+}
+.numero {
+  display: inline-block; /* Asegura que el número se muestre en línea con los iconos */
+  vertical-align: top; /* Alinea el número en la parte superior */
+}
+button.eliminar {
+  /* background-color: #9b8f67;  */
+  color: #f44336; /* Color del texto del botón Cancelar */
+}
+button.eliminar:hover {
+  background-color:  #c6a5a5; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+/* Estilos para el campo de búsqueda futurista */
+.futuristic-search-field {
+  width: 100%;
+  max-width: 500px; /* Ajusta el ancho máximo según tus necesidades */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.1); /* Color de fondo semitransparente */
+  border-radius: 25px; /* Esquinas redondeadas */
+  padding: 10px 20px; /* Espaciado interno */
+  border: 2px solid transparent; /* Borde transparente inicial */
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+
+/* Estilos para el campo de entrada */
+.futuristic-search-field input {
+  flex: 1; /* El campo de entrada ocupa el espacio restante */
+  color: #323131; /* Color del texto */
+  border: none; /* Borde transparente */
+  outline: none; /* Elimina el contorno de enfoque */
+  background-color: transparent; /* Fondo transparente */
+  font-size: 16px; /* Tamaño de fuente */
+}
+
+/* Estilos para el icono de búsqueda */
+.futuristic-search-button {
+  background-color: transparent; /* Fondo transparente */
+  color: #434546; /* Color del icono */
+  border: none; /* Borde transparente */
+  cursor: pointer;
+}
+
+.futuristic-search-button:hover {
+  color: #ffffff; /* Cambia el color al pasar el cursor */
+}
+
+/* Estilos para el campo de entrada cuando está enfocado */
+.futuristic-search-field:focus-within {
+  border-color: #8ac6d1; /* Cambia el color del borde al enfocar */
+  background-color: rgba(255, 255, 255, 0.2); /* Cambia el fondo al enfocar */
+}
+
+/* Estilos para la etiqueta (placeholder) del campo de entrada */
+.futuristic-search-field input::placeholder {
+  color: #0a0b0b; /* Color del placeholder */
+}
+
+/* Estilos para la etiqueta del campo de entrada cuando está enfocado */
+.futuristic-search-field input:focus::placeholder {
+  color: #0a0b0b; /* Cambia el color del placeholder al enfocar */
+}
+.footer {
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  background-color: #2c3e50;
+  padding: 10px;
+  margin:20px -15px 110px;
+  width: 100%;
+}
+::ng-deep .mat-mdc-paginator-icon {
+
+  fill: #2196f3 !important;
+}
+
+::ng-deep .mat-mdc-icon-button[disabled] .mat-mdc-paginator-icon {
+  fill: rgb(169, 169, 169)!important;
+}
+
+/* para que no se salgan las tabla del mat-card en vista movil */
+.table-container {
+   border-radius: 6px;
+  overflow-x: auto; /* Permite el desplazamiento horizontal */
+  -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
+}
+
+@media (max-width: 768px) {
+  .footer {
+
+     font-size: 10px;
+    position: relative;
+    left: -20px;
+    /* Salir del contenedor principal */
+    width: calc(97% + 31px);
+    /* Hacerlo más largo que el mat-card */
+    background-color: #2c3e50;
+    /* Cambiar color si es necesario */
+  }
+  mat-card {
+    margin: 10px;
+    width: calc(100% - 20px); /* Ajusta el ancho del mat-card */
+    font-size: larger;
+
+  }
+
+  /* Estilos adicionales para la tabla en dispositivos móviles */
+  .table-container {
+    margin: 0 -15px; /* Ajusta el margen para que el contenedor se alinee bien */
+  }
+  .futuristic-search-field {
+    width: 90%;
+  }
+
+
+
+}

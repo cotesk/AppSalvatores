@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import '~@angular/material/theming';
+ @import '@angular/material/prebuilt-themes/indigo-pink.css';
+ @import 'ngx-extended-pdf-viewer/ngx-extended-pdf-viewer.css';
+ @import '~ngx-extended-pdf-viewer/ngx-extended-pdf-viewer.css';
+
+
+.mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
+.mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
+.mdc-checkbox .mdc-checkbox__native-control[data-indeterminate=true]:enabled~.mdc-checkbox__background {
+  border-color: #ff9800 !important;
+  background-color: #ff9800 !important;
+}
+
+
+
+
+ /* @import url('https://fonts.googleapis.com/icon?family=Material+Icons'); */
+
+ /* @import "~@fortawesome/fontawesome-free/css/all.css"; */
+

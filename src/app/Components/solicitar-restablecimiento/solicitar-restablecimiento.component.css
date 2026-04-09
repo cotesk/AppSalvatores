@@ -1,0 +1,40 @@
+/* estilos para solicitar-restablecimiento.component.css y restablecer-contrasena.component.css */
+mat-card {
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button {
+  width: 100%;
+}
+
+div[ngIf] {
+  margin-top: 20px;
+  text-align: center;
+  color: #00796b;
+}
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón Cancelar */
+  color: #fff; /* Color del texto del botón Cancelar */
+
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  border-radius: 5px;
+
+}
+button.agregar:hover {
+  background-color:  rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+button.agregar[disabled] {
+  background-color: #ccc; /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666; /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc; /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}

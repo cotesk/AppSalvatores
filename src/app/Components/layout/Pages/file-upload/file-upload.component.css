@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+mat-card {
+  max-width: 400px;
+  width: 100%;
+}
+.file-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-input-container mat-icon {
+  font-size: 24px;
+  color: #2196F3;
+}
+
+.file-input-container input {
+  display: none; /* Oculta el campo de entrada de archivos nativo */
+}
+
+.file-input-container button {
+  margin-left: auto;
+}
+
+
+button:hover {
+  background-color: rgb(149, 177, 205);
+}
+button[color="warn"]:hover {
+  background-color: #9e3434; /* Cambia el color al pasar el ratón sobre el botón */
+}
+button[color="primary"]:hover {
+  background-color: #b4c1ea; /* Cambia el color al pasar el ratón sobre el botón */
+}
+
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón Cancelar */
+  color: #fff; /* Color del texto del botón Cancelar */
+}
+button.agregar:hover {
+  background-color:  rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+button.agregar[disabled] {
+  background-color: #ccc; /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666; /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc; /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}

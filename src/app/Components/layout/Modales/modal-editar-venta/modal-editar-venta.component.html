@@ -1,0 +1,86 @@
+<h2 mat-dialog-title class="text-center">Cambio de Venta</h2>
+
+
+
+<mat-dialog-content [formGroup]="editarForm" class="modal-content">
+
+   
+    <div class="total-box">
+        <span>Total:</span>
+        <strong>{{ totalVentaReal | number:'1.0-0' }}</strong>
+    </div>
+
+
+    <div class="form-container">
+
+        <!-- Tipo de Pago -->
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Tipo de Pago</mat-label>
+            <mat-select formControlName="TipoPago" (selectionChange)="onTipoPagoChange($event)">
+
+                <mat-option *ngFor="let tipo of tiposPago" [value]="tipo.nombre">
+                    <mat-icon [style.color]="tipo.color" style="margin-right: 10px;">
+                        {{ tipo.icono }}
+                    </mat-icon>
+
+                    {{ tipo.nombre }}
+                </mat-option>
+
+            </mat-select>
+        </mat-form-field>
+
+
+        <!-- Tipo de Transferencia -->
+        <mat-form-field appearance="fill" class="full-width" *ngIf="editarForm.value.TipoPago !== 'Efectivo'">
+            <mat-label>Tipo de Transferencia</mat-label>
+            <mat-select formControlName="TipoTranferencia">
+
+                <mat-option value="">Seleccione</mat-option>
+
+                <mat-option *ngFor="let tipo of tiposTransferencia" [value]="tipo.nombre">
+                    <img [src]="tipo.icono" width="24" height="24"
+                        style="margin-right: 8px; vertical-align: middle; border-radius: 4px;" />
+                    {{ tipo.nombre }}
+                </mat-option>
+
+            </mat-select>
+        </mat-form-field>
+
+
+        <!-- Monto Efectivo -->
+        <mat-form-field appearance="fill" class="full-width" *ngIf="editarForm.value.TipoPago !== 'Transferencia'">
+            <mat-label>Monto Efectivo</mat-label>
+            <input matInput type="number" formControlName="PrecioEfectivo">
+        </mat-form-field>
+
+        <!-- Monto Transferencia -->
+        <mat-form-field appearance="fill" class="full-width" *ngIf="editarForm.value.TipoPago !== 'Efectivo'">
+            <mat-label>Monto Transferencia</mat-label>
+            <input matInput type="number" formControlName="PrecioTransferencia">
+        </mat-form-field>
+
+    </div>
+</mat-dialog-content>
+
+<!-- <mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardarCambios()">Guardar</button>
+</mat-dialog-actions> -->
+
+
+<mat-dialog-actions class="actions">
+
+
+    <div class="guardar-centro">
+        <button mat-flat-button color="primary" (click)="guardarCambios()">
+            <mat-icon class="icon-left">save</mat-icon>
+            Guardar
+        </button>
+    </div>
+
+
+    <button mat-raised-button color="warn" type="button" class="cancelar" (click)="cancelar()">
+        Cancelar
+    </button>
+
+</mat-dialog-actions>

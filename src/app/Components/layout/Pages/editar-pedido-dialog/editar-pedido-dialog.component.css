@@ -1,0 +1,93 @@
+.minimal-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.minimal-table th {
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+}
+
+.minimal-table td {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+button[color="warn"] {
+    color: white;
+  background-color: #df2323; 
+}
+button[color="warn"]:hover {
+    color: white;
+  background-color: #d16969; 
+}
+button[color="primary"]:hover {
+  background-color: rgb(79, 96, 113); /* Cambia el color al pasar el ratón sobre el botón */
+}
+
+
+button.aumentar {
+  /* background-color: #9b8f67;  */
+  color: #3351aa; /* Color del texto del botón Cancelar */
+}
+button.aumentar:hover {
+  background-color:  #b4c1ea; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+/* Cuando está deshabilitado */
+button.aumentar[disabled] {
+  color: #ffffff52;  /* Un rojo claro/grisáceo */
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.disminuir {
+  /* background-color: #9b8f67;  */
+  color: #ff0000; /* Color del texto del botón Cancelar */
+}
+button.disminuir:hover {
+  background-color:  #e6a4a4; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+
+/* Cuando está deshabilitado */
+button.disminuir[disabled] {
+  color: #ffcccc;  /* Un rojo claro/grisáceo */
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cantidad-texto {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+
+/* Contenedor que permitirá el scroll horizontal SOLO en móviles */
+.tabla-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mantener la tabla sin romperse */
+.tabla-scroll table {
+  min-width: 650px; /* Ajusta según tus columnas */
+}
+
+
+@media (max-width: 768px) {
+  .tabla-scroll {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+}

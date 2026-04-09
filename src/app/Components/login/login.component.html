@@ -1,0 +1,102 @@
+<div class="fondo-animado"></div>
+
+<div class="login-container">
+  <mat-card class="login-card">
+
+    <!-- Panel Izquierdo: Carrusel + bienvenida -->
+    <div class="login-left">
+      <div class="header">
+        <h2 style="text-align: center;">Bienvenido de nuevo</h2>
+        <!-- <p>
+          Accede a tu cuenta para disfrutar de nuestras ofertas exclusivas en productos tecnológicos.
+        </p> -->
+        <div *ngIf="comentarioTextoLogin ">
+          <p>{{ comentarioTextoLogin.comentarios }}</p>
+        </div>
+
+      </div>
+
+      <!-- Carrusel automático -->
+      <div class="vertical-carousel">
+        <div class="carousel-inner">
+          <div *ngFor="let imageUrl of images; let i = index" class="carousel-slide"
+            [class.active]="i === currentIndex">
+            <img [src]="imageUrl" (click)="verImagen(images[currentIndex])" alt="Imagen de promoción"
+              class="carousel-image" />
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-text">
+        <p>
+          Consulta tus compras
+          <span (click)="navigateToRoute()">👉AQUÍ👈</span>
+        </p>
+      </div>
+
+      <p style="text-align: center; margin-top: 5px; color: white;">
+        © 2025 Todos los derechos reservados
+      </p>
+
+    </div>
+
+    <!-- Panel Derecho: Formulario de Login -->
+    <div class="login-right">
+      <h2>Iniciar Sesión</h2>
+
+      <form [formGroup]="formularioLogin" (ngSubmit)="iniciarSesion($event)">
+
+
+        <div class="login-form">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-icon matPrefix>mail</mat-icon>
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="email" autocomplete="off" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-icon matPrefix>lock</mat-icon>
+            <mat-label>Contraseña</mat-label>
+            <input [type]="ocultarPassword ? 'password' : 'text'" matInput formControlName="password" />
+            <button mat-icon-button matSuffix type="button" (click)="ocultarPassword = !ocultarPassword">
+              <mat-icon>{{ ocultarPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+
+        <mat-error *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</mat-error>
+
+        <button mat-raised-button color="primary" class="btn-login"
+          [disabled]="formularioLogin.invalid || mostrarLoading">
+          Ingresar
+          <mat-icon>login</mat-icon>
+        </button>
+
+        <div class="links">
+          <!-- <p>¿No tienes cuenta? <a (click)="redirigirANuevosUsuarios()">Crear cuenta</a></p> -->
+          <p>¿Olvidaste tu contraseña? <a (click)="mostrarRecuperarSwal()">Recuperar</a></p>
+          <p>¿Cambiar contraseña? <a (click)="cambiarContra()">Cambiar</a></p>
+        </div>
+
+        <div class="social">
+          <a mat-icon-button matTooltip="Ver perfil del creador"
+            href="https://www.facebook.com/profile.php?id=100076950199044" target="_blank" rel="noopener noreferrer">
+            <mat-icon>facebook</mat-icon>
+          </a>
+
+        </div>
+
+        <p style="text-align: center; margin-top: 5px; color: white;">
+          © 2025 Todos los derechos reservados
+        </p>
+
+
+        <!-- <p style="text-align: center;">© 2025 Todos los derechos reservados</p> -->
+
+        <!-- <mat-progress-bar mode="indeterminate" *ngIf="mostrarLoading"></mat-progress-bar> -->
+      </form>
+    </div>
+  </mat-card>
+
+</div>

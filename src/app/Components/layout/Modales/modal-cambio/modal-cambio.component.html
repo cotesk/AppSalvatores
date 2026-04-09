@@ -1,0 +1,210 @@
+<form [formGroup]="formularioProductoVenta" class="formulario-producto-venta">
+  <h2 mat-dialog-title class="custom-dialog-title">Cambio de productos</h2>
+
+  <div mat-dialog-content class="dialog-content">
+    <mat-form-field class="input-field">
+      <mat-label>ID Venta</mat-label>
+      <input matInput [(ngModel)]="valorInput" [ngModelOptions]="{standalone: true}" [value]="data.idVenta" disabled>
+    </mat-form-field>
+
+    <mat-form-field class="input-field">
+      <mat-label># Venta</mat-label>
+      <input matInput [(ngModel)]="valorInputNumeroVenta" [ngModelOptions]="{standalone: true}" [value]="data.numeroDocumento" disabled>
+    </mat-form-field>
+
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table class="producto-table">
+          <thead>
+            <tr>
+              <th style="background-color: #3f4448; color: white; text-align: center;">Seleccionar</th>
+              <th style="background-color: #3f4448; color: white; text-align: center;">Cantidad</th>
+              <th style="background-color: #3f4448; color: white; text-align: center;">Unidad</th>
+              <th style="background-color: #3f4448; color: white; text-align: center;">Descripción del producto</th>
+              <th style="background-color: #3f4448; color: white; text-align: center;">Precio unitario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detalle of data.detalleVenta">
+              <td>
+                <mat-checkbox (change)="seleccionarDetalle(detalle)" [checked]="isSelected(detalle)"></mat-checkbox>
+              </td>
+              <td>{{ detalle.cantidad }}</td>
+              <td>{{ detalle.unidadMedidaTexto }}</td>
+              <td>{{ detalle.descripcionProducto | slice:0:40 }}</td>
+              <td>{{ formatearNumero(detalle.precioTexto) + ' $' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="total">
+          <p>El total es: <span class="total-amount">{{ formatearNumero(data.totalTexto) }}</span> <span> $</span></p>
+        </div>
+
+      </div>
+
+      <div class="image-wrapper">
+        <div *ngIf="imagenSeleccionada">
+          <img [src]="imagenSeleccionada" alt="Imagen del producto" (click)="verImagen()">
+        </div>
+      </div>
+    </div>
+
+    <h2 mat-dialog-title class="custom-dialog-title" style="text-align: center;">Lista de Cambios por el ID de Venta</h2>
+    <table mat-table [dataSource]="dataListaCambios" class="mat-elevation-z8">
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef  style="background-color: #3f4448; color: white; text-align: center;">Seleccionar</th>
+        <td mat-cell *matCellDef="let cambio" style="text-align: center;">
+          <mat-checkbox (click)="selectCambio(cambio)" [checked]="isSelected2(cambio)"></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="idCambio">
+        <th mat-header-cell *matHeaderCellDef  style="background-color: #3f4448; color: white; text-align: center;">ID Cambio</th>
+        <td mat-cell *matCellDef="let cambio" style="text-align: center;">{{ cambio.idCambio }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="producto">
+        <th mat-header-cell *matHeaderCellDef  style="background-color: #3f4448; color: white; text-align: center;">Producto Antiguo</th>
+        <td mat-cell *matCellDef="let cambio"  style="text-align: center;">{{ cambio.producto | slice:0:45 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="nuevoProducto">
+        <th mat-header-cell *matHeaderCellDef  style="background-color: #3f4448; color: white; text-align: center;">Producto Nuevo</th>
+        <td mat-cell *matCellDef="let cambio"  style="text-align: center;">{{ cambio.nuevoProducto | slice:0:45 }}</td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="cantidadCambiada">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">Cantidad Cambiada</th>
+        <td mat-cell *matCellDef="let cambio" style="text-align: center;">{{ cambio.cantidadCambiada }}</td>
+      </ng-container>
+      <ng-container matColumnDef="unidadMedida">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">Unidad Medida</th>
+        <td mat-cell *matCellDef="let cambio" style="text-align: center;">{{ cambio.unidadMedida }}</td>
+      </ng-container>
+      <ng-container matColumnDef="diferenciaPrecio">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Diferencia de precio
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+          <span
+            [ngClass]="{'texto-rojo': esNegativo(element.diferenciaPrecio), 'texto-verde': !esNegativo(element.diferenciaPrecio)}">
+            <mat-icon *ngIf="esNegativo(element.diferenciaPrecio)" style="text-align: center;">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="!esNegativo(element.diferenciaPrecio)" style="text-align: center;">keyboard_arrow_up</mat-icon>
+           <span  class="numero"> {{ formatearNumero(element.diferenciaPrecio) }}</span>
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaCambio">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">Fecha de Cambio</th>
+        <td mat-cell *matCellDef="let cambio" style="text-align: center;">{{ cambio.fechaCambio | date:'dd-MM-yyyy hh:mm a'  }}</td>
+      </ng-container>
+
+      <!-- Asignar las columnas a mostrar -->
+      <tr mat-header-row *matHeaderRowDef="columnasMostradas"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnasMostradas;"></tr>
+    </table>
+
+
+  </div>
+
+  <div class="form-container">
+    <div class="form-row">
+      <mat-form-field class="form-field">
+        <mat-label>Producto</mat-label>
+        <input matInput type="text" placeholder="Buscar..." aria-label="Number" [matAutocomplete]="auto"
+          formControlName="producto" (focus)="mostrarListaProducto()">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="mostrarProducto"
+          (optionSelected)="productoParaVenta($event)">
+          <mat-option *ngFor="let option of listaProductoFiltro" [value]="option">
+            {{ option.nombre.length > 30 ? option.nombre.slice(0, 30) + '...' : option.nombre }}
+            <hr *ngIf="!lastItem(option, listaProductoFiltro)" class="separator">
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label>Cantidad</mat-label>
+        <input matInput autocomplete="off" asp-for="cantidad" formControlName="cantidad" type="number">
+        <mat-icon matSuffix>plus_one</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field class="form-field">
+        <mat-label>Motivo del cambio</mat-label>
+        <textarea matInput autocomplete="off" formControlName="motivo" rows="6"></textarea>
+        <mat-icon matSuffix>chat_bubble</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field class="form-field">
+        <mat-label>Tipo de pago</mat-label>
+        <mat-select [(value)]="tipodePagoPorDefecto">
+          <mat-option value="Efectivo">
+            <mat-icon class="icon-green">attach_money</mat-icon> Efectivo
+          </mat-option>
+          <mat-option value="Transferencia">
+            <mat-icon class="icon-blue">account_balance</mat-icon> Transferencia
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label>Unidad de compra</mat-label>
+        <mat-select [(value)]="unidaddePagoPorDefecto">
+          <mat-option value="Unitario">
+            <mat-icon class="icon-green">check_circle</mat-icon> Unitario
+          </mat-option>
+          <mat-option value="Comida">
+            <mat-icon class="icon-blue">archive</mat-icon> Comida
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field class="form-field">
+        <mat-label>Estado del Producto</mat-label>
+        <mat-select [(value)]="estadoProductoDevuelto">
+          <mat-option value="Nuevo">
+            <mat-icon class="icon-blue">fiber_new</mat-icon> Nuevo
+          </mat-option>
+          <mat-option value="Dañado">
+            <mat-icon class="icon-yellow">report_problem</mat-icon> Dañado
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label>Tipo de Cambio</mat-label>
+        <mat-select [(value)]="cambioEsNuevo">
+          <mat-option [value]="true">
+            <mat-icon class="icon-green">autorenew</mat-icon> Cambio Nuevo
+          </mat-option>
+          <mat-option [value]="false">
+            <mat-icon class="icon-yellow">cached</mat-icon> Cambio Existente
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+
+  <div class="button-container">
+    <button mat-raised-button mat-dialog-close class="agregar" color="warn" (click)="realizarCambio()">
+      <mat-icon>save</mat-icon>
+      Guardar
+    </button>
+
+    <button mat-raised-button mat-dialog-close class="eliminar" color="warn" (click)="cerrarModal()">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+  </div>
+
+
+</form>

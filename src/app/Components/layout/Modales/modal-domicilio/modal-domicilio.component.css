@@ -1,0 +1,103 @@
+/* header con botón close en la esquina */
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* título centrado */
+  position: relative;
+  padding: 8px 12px 0 12px;
+}
+
+/* titulo centrado visualmente */
+.titulo {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* botón cerrar top-right */
+.close-btn {
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  width: 40px;
+  height: 40px;
+}
+
+/* contenido y form */
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 16px 12px;
+  max-height: calc(90vh - 120px); /* para evitar overflow del dialog */
+  overflow-y: auto;
+}
+
+/* Guardar centrado */
+.guardar-centro {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Cancelar totalmente a la derecha */
+.cancelar {
+  margin-left: auto;
+}
+
+.campo { width: 100%; }
+
+.por-cobrar { margin-top: 4px; }
+
+/* acciones */
+.actions {
+  padding: 10px 16px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 8px;
+}
+
+/* icono en botón guardar */
+.icon-left {
+  margin-right: 6px;
+}
+
+button[color="warn"]:hover {
+  background-color: #9e3434; /* Cambia el color al pasar el ratón sobre el botón */
+}
+
+.icono-nombre {
+  color: #4caf50; /* verde */
+}
+
+.icono-direccion {
+  color: #ff9800; /* naranja */
+}
+
+.icono-telefono {
+  color: #2196f3; /* azul */
+}
+
+.icono-referencia {
+  color: #9c27b0; /* morado */
+}
+
+.icono-cobrar {
+  color: #f44336; /* rojo */
+  vertical-align: middle; /* alinear con el texto del checkbox */
+  margin-right: 4px;
+}
+
+/* Opcional: tamaño uniforme para todos los iconos en los inputs */
+.mat-form-field .mat-icon {
+  font-size: 20px;
+}
+
+
+/* responsive mobiles */
+@media (max-width: 600px) {
+  .titulo { font-size: 1.1rem; }
+  .close-btn { right: 6px; top: 6px; }
+  .contenido { padding: 6px 12px 12px; gap: 10px; }
+}

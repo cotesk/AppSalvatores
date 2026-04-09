@@ -1,0 +1,27 @@
+button.ver {
+  /* background-color: #9b8f67;  */
+  color: #73673e; /* Color del texto del botón Cancelar */
+}
+button.ver:hover {
+  background-color:  #e0ddbf; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón Cancelar */
+  color: #fff; /* Color del texto del botón Cancelar */
+  top: 0px;
+  left: 20px;
+
+}
+button.agregar:hover {
+  background-color:  rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+button.eliminar {
+  /* background-color: #9b8f67;  */
+  color: #fff; /* Color del texto del botón Cancelar */
+   background-color: #f44336; /* Fondo del botón Cancelar */
+  top: 0px;
+}
+button.eliminar:hover {
+  background-color:  #c25d5d; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}

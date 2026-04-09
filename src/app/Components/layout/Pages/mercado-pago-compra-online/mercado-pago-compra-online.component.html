@@ -1,0 +1,320 @@
+<div class="container">
+  <h2 mat-dialog-title class="titulo">Consulta tu compra de mercado pago</h2>
+
+  <div class="form-container">
+    <form [formGroup]="formularioCompraOnline" class="formulario">
+
+
+
+
+      <mat-form-field class="campo-busqueda">
+        <mat-label>Buscar</mat-label>
+        <mat-select [(value)]="transactions" (selectionChange)="onSelectChange($event)">
+          <mat-option value="id">
+            <mat-icon class="icono-compra">confirmation_number</mat-icon> # de compra
+          </mat-option>
+          <mat-option value="reembolso">
+            <mat-icon class="fas fa-undo-alt icono-reembolso"></mat-icon> Solicitar Reembolso
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+
+
+
+      <mat-form-field class="campo-id">
+        <mat-label># de compra</mat-label>
+        <input matInput autocomplete="off" formControlName="transactionId" pattern="[0-9]*" maxlength="16">
+
+        <mat-icon matSuffix>search</mat-icon> <!-- Cambiado de 'face' a 'search' -->
+        <mat-error *ngIf="formularioCompraOnline.get('transactionId')?.hasError('pattern')">
+          Solo se permiten números.
+        </mat-error>
+        <mat-error *ngIf="formularioCompraOnline.get('transactionId')?.hasError('maxlength')">
+          Máximo de 15 dígitos.
+        </mat-error>
+        <mat-error *ngIf="formularioCompraOnline.get('transactionId')?.hasError('longitudCedula')">
+          Máximo de 15 dígitos.
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="campo-correo" maxlength="35" *ngIf="transactions === 'reembolso'">
+        <mat-label>Digita tu correo</mat-label>
+        <input matInput autocomplete="off" formControlName="correo">
+        <mat-icon matSuffix>mail</mat-icon>
+        <mat-error *ngIf="formularioCompraOnline.get('correo')">
+          Digita un correo valido
+        </mat-error>
+        <mat-error *ngIf="formularioCompraOnline.get('correo')?.hasError('maxlength')">
+          Máximo de 35 dígitos.
+        </mat-error>
+      </mat-form-field>
+
+
+
+
+      <button mat-raised-button class="agregar" [disabled]="formularioCompraOnline.get('transactionId')?.invalid"
+        *ngIf="transactions === 'id'" (click)="buscarCompra()">
+
+        <mat-icon>search</mat-icon>
+        Buscar</button>
+
+
+      <button mat-raised-button class="agregar" [disabled]="formularioCompraOnline.get('transactionId')?.invalid"
+        *ngIf="transactions === 'reembolso'" (click)="SolicitarReembolso()">
+
+        <mat-icon>search</mat-icon>
+        Solicitar</button>
+
+
+    </form>
+  </div>
+
+  <div class="table-container">
+    <h3 class="detalle">Detalles del cliente</h3>
+    <table mat-table [dataSource]="clienteData" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="identificationNumber">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;"> #
+          Identificación </th>
+        <td mat-cell *matCellDef="let cliente" style="text-align: center;"> {{ cliente.identificationNumber }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Correo </th>
+        <td mat-cell *matCellDef="let cliente" style="text-align: center;"> {{ cliente.email }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Nombre </th>
+        <td mat-cell *matCellDef="let cliente" style="text-align: center;"> {{ cliente.firstName || 'No disponible' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Apellido </th>
+        <td mat-cell *matCellDef="let cliente" style="text-align: center;"> {{ cliente.lastName || 'No disponible' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Teléfono </th>
+        <td mat-cell *matCellDef="let cliente" style="text-align: center;"> {{ cliente.phone || 'No disponible' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="tipoIdentificacion">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Identificación </th>
+        <td mat-cell *matCellDef="let cliente" style="text-align: center;"> {{ cliente.identificationType || 'No
+          disponible' }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <div class="table-container">
+    <h3 class="detalle">Detalles de la Transacción</h3>
+    <table mat-table [dataSource]="transactionData" class="mat-elevation-z8">
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Total </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ formatearNumero(transaccion.amount)+'
+          $' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currency">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Moneda </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.currency }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdDate">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Fecha </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.createdDate | date:
+          'dd/MM/yyyy hh:mm a' }} </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;"> Estado </th>
+    <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.status }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="mercadoPagoFee">
+    <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;"> Comisión </th>
+    <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.mercadoPagoFee }} </td>
+  </ng-container> -->
+
+      <ng-container matColumnDef="paymentMethod">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Método de Pago
+        </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;">
+          {{ getReadablePaymentMethod(transaccion.paymentMethod) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paymentMethodType">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Tipo de Método
+        </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;">
+          {{ getReadablePaymentMethodType(transaccion.paymentMethodType) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="numeroDocumento">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Numero Venta </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.numeroDocumento || 'No
+          disponible' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estadoVenta">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Estado de Venta
+        </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;">
+          <span [ngStyle]="{
+          'background-color': getStatusColor(transaccion.estadoVenta),
+          'color': 'white'
+        }" style="
+          display: inline-block;
+          padding: 5px 10px;
+          border-radius: 4px;
+          font-weight: bold;
+        ">
+            {{ transaccion.estadoVenta }}
+          </span>
+        </td>
+      </ng-container>
+
+
+
+      <ng-container matColumnDef="icono">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Estado
+        </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;">
+          <div class="center-button">
+            <button mat-icon-button *ngIf="transaccion.estadoVenta === 'Reembolsado' || transaccion.estadoVenta === 'Completada' ||
+                 transaccion.estadoVenta === 'Preparación y Empaque' || transaccion.estadoVenta === 'En Camino'
+                 || transaccion.estadoVenta === 'En Proceso' || transaccion.estadoVenta === 'Cancelado'
+                 || transaccion.estadoVenta === 'Pendiente'
+              " [ngStyle]="{
+            'background-color': getStatusColor(transaccion.estadoVenta),
+            'color': 'white',
+            'border-radius': '50%',
+            'width': '40px',
+            'height': '40px',
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center',
+            'margin-left': '5px'
+          }" (click)="Estado(transaccion.transactionId, transaccion.estadoVenta)">
+              <i class="fas fa-clock" *ngIf="transaccion.estadoVenta === 'En Proceso'" style="color: white"></i>
+              <i class="fas fa-hourglass-half" *ngIf="transaccion.estadoVenta === 'Pendiente'" style="color: white"></i>
+              <i class="fas fa-times-circle" *ngIf="transaccion.estadoVenta === 'Cancelado'" style="color: white"></i>
+              <i class="fas fa-check-circle" *ngIf="transaccion.estadoVenta === 'Completada'" style="color: white"></i>
+              <i class="fas fa-exchange-alt" *ngIf="transaccion.estadoVenta === 'Reembolsado'" style="color: white"></i>
+              <i class="fas fa-tools" *ngIf="transaccion.estadoVenta === 'Preparación y Empaque'"
+                style="color: white"></i>
+              <i class="fas fa-truck" *ngIf="transaccion.estadoVenta === 'En Camino'" style="color: white"></i>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+
+
+      <ng-container matColumnDef="cardNumber">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Cedula Responsable </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.cardNumber || 'No
+          disponible' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cardType">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;"> Tipo
+          de Tarjeta </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.cardType || 'No
+          disponible' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cardNameCliente">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Nombre en la Tarjeta </th>
+        <td mat-cell *matCellDef="let transaccion" style="text-align: center;"> {{ transaccion.cardNameCliente || 'No
+          disponible' }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsTransaccion"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsTransaccion;"></tr>
+    </table>
+  </div>
+
+
+
+
+  <div class="table-container">
+    <h3 class="detalle">Detalles de los Productos</h3>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Definición de las columnas -->
+
+      <ng-container matColumnDef="transactionId">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;"> ID
+          Transacción </th>
+        <td mat-cell *matCellDef="let producto" style="text-align: center;"> {{ producto.transactionId }} </td>
+      </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Título </th>
+        <td mat-cell *matCellDef="let producto" style="text-align: center;">
+          {{ producto.title | slice:0:60 }}{{ producto.title.length > 60 ? '...' : '' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Descripción </th>
+        <td mat-cell *matCellDef="let producto" style="text-align: center;"> {{ producto.description }} </td>
+      </ng-container>
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Cantidad </th>
+        <td mat-cell *matCellDef="let producto" style="text-align: center;"> {{ producto.quantity }} </td>
+      </ng-container>
+      <ng-container matColumnDef="unitPrice">
+        <th mat-header-cell *matHeaderCellDef style="background-color: #3f4448; color: white; text-align: center;">
+          Precio Unitario </th>
+        <td mat-cell *matCellDef="let producto" style="text-align: center;"> {{ formatearNumero(producto.unitPrice)+' $'
+          }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsProducto"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsProducto;"></tr>
+    </table>
+
+    <!-- Coloca el paginador aquí, justo debajo de la tabla -->
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+  </div>
+
+
+
+
+  <!-- <mat-paginator class="pagina"  [pageSize]="2" [pageSizeOptions]="[2, 4, 6]" showFirstLastButtons></mat-paginator> -->
+
+</div>
+
+<footer class="footer">
+  <p>Copyright &copy; 2024 - Hecho con orgullo en Colombia. Todos los derechos reservados.</p>
+</footer>

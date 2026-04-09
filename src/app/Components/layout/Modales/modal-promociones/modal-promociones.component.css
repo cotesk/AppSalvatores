@@ -1,0 +1,109 @@
+.promociones-title {
+  font-size: 24px;
+  color: #d9534f;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.vertical-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 500px;
+  overflow-y: auto;
+  width: 95%;
+  border: 2px solid #d9534f;
+  padding: 10px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ffefba, #ffffff);
+}
+
+.carousel-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.carousel-slide {
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+mat-dialog-content {
+  overflow: hidden; /* Evita el desplazamiento interno adicional */
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.promo-banner {
+  position: relative;
+  border: 3px solid #ff9800;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.promo-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff9800;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.carousel-image {
+  width: 90%;
+  height: auto;
+  object-fit: cover;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 44px;
+  color: #d9534f;
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+}
+
+.close-button:hover {
+  transform: scale(1.1); /* Escala ligeramente el botón */
+  color: #c9302c; /* Cambia el color a un rojo más oscuro */
+}
+@media (max-width: 768px) {
+  .promociones-title {
+    font-size: 20px; /* Tamaño de fuente más pequeño */
+  }
+
+  .vertical-carousel {
+    padding: 5px; /* Menos padding en móviles */
+  }
+
+  .carousel-slide {
+    max-width: 90%; /* Ancho más grande en móviles */
+  }
+
+  .promo-label {
+    font-size: 12px; /* Ajustar el tamaño de la etiqueta */
+  }
+
+  .close-button {
+    font-size: 36px; /* Ajustar el tamaño del botón */
+  }
+}

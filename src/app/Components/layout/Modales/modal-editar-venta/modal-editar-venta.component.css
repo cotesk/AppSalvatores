@@ -1,0 +1,70 @@
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+button[color="warn"]:hover {
+    background-color: #9e3434;
+    /* Cambia el color al pasar el ratón sobre el botón */
+}
+
+/* Guardar centrado */
+.guardar-centro {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Cancelar totalmente a la derecha */
+.cancelar {
+    margin-left: auto;
+}
+
+.icon-left {
+    margin-right: 6px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* acciones */
+.actions {
+    padding: 10px 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 8px;
+}
+
+.total-box {
+  width: 90%;
+  background: #e3f2fd;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 18px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  border-left: 5px solid #2196f3;
+}
+
+
+
+/* Responsive */
+@media (max-width: 600px) {
+    .modal-content {
+        padding: 0 8px;
+    }
+}

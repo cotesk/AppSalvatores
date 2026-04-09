@@ -1,0 +1,133 @@
+.texto {
+  position: absolute;
+  top: 10px;
+  left: 553px;
+}
+
+/* .minimalist-Aplicar {
+  position: absolute;
+  top: 80px;
+  left: 690px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 15px;
+  border-radius: 5px;
+  flex-basis: 15%;
+} */
+
+.minimalist-correo {
+  position: absolute;
+  top: 70px;
+  left: 200px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+
+
+
+.tabla {
+  position: absolute;
+  top: 150px;
+  left: 10px;
+  /* width: 50%; */
+}
+
+
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón Cancelar */
+  color: #fff; /* Color del texto del botón Cancelar */
+}
+button.agregar:hover {
+  background-color:  rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+button.agregar[disabled] {
+  background-color: #ccc; /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666; /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc; /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}
+
+.pagina {
+  position: absolute;
+  top: 70px;
+  left: 700px;
+}
+
+
+::ng-deep .mat-mdc-paginator-icon {
+
+  fill: #2196f3 !important;
+}
+
+::ng-deep .mat-mdc-icon-button[disabled] .mat-mdc-paginator-icon {
+  fill: rgb(169, 169, 169)!important;
+}
+
+.circular-button {
+  background-color: #369a29; /* Cambia según sea necesario */
+  border-radius: 50%; /* Forma circular */
+  width: 40px; /* Ajusta el tamaño */
+  height: 40px; /* Ajusta el tamaño */
+  display: flex; /* Para centrar el contenido */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  margin-left: 5px; /* Espaciado entre el estado y el botón */
+}
+
+.circular-button mat-icon {
+  color: white; /* Color del icono */
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Para ocupar toda la altura de la celda */
+}
+
+.disabled-button {
+  background-color: #9e9e9e; /* Color gris para el estado deshabilitado */
+  cursor: not-allowed; /* Cambia el cursor para indicar que está deshabilitado */
+}
+
+.enabled-button {
+  background-color: #ff9800; /* Color naranja para el estado habilitado */
+  color: white; /* Color del texto en blanco */
+}
+
+
+@media (max-width: 768px) {
+
+
+
+  .tabla, .tabla2 {
+    width: 300% !important;
+    text-align: center;
+  }
+
+  /* Ajustar las celdas de la tabla para que no se desborden */
+  .tabla td, .tabla2 td {
+    word-wrap: break-word;
+    text-align: left;
+    padding: 8px;
+  }
+
+  /* Alinear el texto de los títulos al centro */
+  h2.texto, h3.texto2, h3.texto3 {
+    text-align: center;
+    font-size: 18px;
+    width: 100%;
+  }
+  .pagina {
+    position: absolute;
+    top: 60px;
+    left: 870px;
+  }
+
+}

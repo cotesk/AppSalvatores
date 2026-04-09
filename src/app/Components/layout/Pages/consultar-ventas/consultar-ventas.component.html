@@ -1,0 +1,97 @@
+<div class="contenedor-principal">
+  <h2 mat-dialog-title class="titulo">Consultar Ventas</h2>
+
+  <!-- Contenedor superior dividido en dos columnas -->
+  <div class="contenedor-superior">
+    <!-- Información del cliente -->
+    <div class="card info-cliente" *ngIf="dataInicio">
+      <h3 class="subtitulo">Cliente</h3>
+      <p><strong># Venta:</strong> {{ Numerodeventa }}</p>
+      <p><strong>Nombre:</strong> {{ NombreCliente }}</p>
+      <p><strong>Cédula:</strong> {{ CedulaCliente }}</p>
+      <p><strong>Pago:</strong> {{ TipoPago }}</p>
+      <p><strong>Total:</strong> {{ formatearNumero(Total) }}</p>
+    </div>
+
+    <!-- Formulario de búsqueda -->
+    <div class="card formulario-busqueda">
+      <h3 class="subtitulo">Búsqueda</h3>
+      <form [formGroup]="formularioVenta" (ngSubmit)="buscarCompra()">
+        <div class="formulario-grupo">
+
+          <mat-form-field appearance="fill" class="campo-busqueda">
+            <mat-label>Buscar por</mat-label>
+            <mat-select [(value)]="Selector" (selectionChange)="onSelectChange($event)">
+              <mat-option value="id">
+                <mat-icon class="icono-compra">confirmation_number</mat-icon> # Compra
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="campo-id" *ngIf="Selector === 'id'">
+            <mat-label># de compra</mat-label>
+            <input matInput autocomplete="off" formControlName="numeroCompra" pattern="[0-9]*" maxlength="15">
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-error *ngIf="formularioVenta.get('numeroCompra')?.hasError('pattern')">
+              Solo números
+            </mat-error>
+            <mat-error *ngIf="formularioVenta.get('numeroCompra')?.hasError('maxlength')">
+              Máximo 15 dígitos
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+
+        <button mat-flat-button class="agregar" type="submit" [disabled]="formularioVenta.invalid">
+          <mat-icon>search</mat-icon> Buscar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabla de productos -->
+  <div class="table-container" *ngIf="dataListaVenta">
+    <h3 class="subtitulo">Detalle de Productos</h3>
+    <table mat-table [dataSource]="dataListaVenta" class="mat-elevation-z2 full-width-table">
+
+      <ng-container matColumnDef="descripcionProducto">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Producto</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.descripcionProducto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Cantidad</th>
+        <td mat-cell *matCellDef="let element"style="text-align: center;">{{ element.cantidad }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="precioTexto">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Precio</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">{{ formatearNumero(element.precioTexto) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalTexto">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Sub Total</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">{{ calcularSubTotalProducto(element) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="descripcionCaracteristica">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Características</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+          {{ element.descripcionCaracteristica.length > 30
+          ? (element.descripcionCaracteristica | slice:0:30) + '...'
+          : element.descripcionCaracteristica }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+    </table>
+
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
+
+<footer class="footer">
+  <p>Copyright &copy; 2025 - Hecho con orgullo en Colombia. Todos los derechos reservados.</p>
+</footer>

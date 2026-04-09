@@ -1,0 +1,77 @@
+/* Ajustes generales */
+mat-form-field {
+  width: 100%;
+  margin: 8px 0;
+}
+
+.form-container {
+  width: 100%;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  width: 100%;
+}
+
+button[color="warn"]:hover {
+  background-color: #9e3434;
+}
+
+button.agregar {
+  background-color: #3351aa;
+  color: #fff;
+}
+
+button.agregar:hover {
+  background-color: rgb(79, 96, 113);
+}
+
+button.agregar[disabled] {
+  background-color: #ccc;
+  color: #666;
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc;
+}
+
+.icon-green {
+  color: rgb(0, 152, 0);
+}
+
+.icon-red {
+  color: red;
+}
+
+/* Estilos específicos para dispositivos móviles */
+@media (max-width: 768px) {
+  h2[mat-dialog-title] {
+    font-size: 1.2em;
+    margin: 0;
+  }
+
+  mat-dialog-content {
+    padding: 0 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-container {
+    padding: 0 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .dialog-actions {
+    flex-direction: column;
+    padding: 8px 10px;
+    width: 100%;
+  }
+
+  .dialog-actions button {
+    margin-top: 8px;
+    width: 100%;
+  }
+}

@@ -1,0 +1,32 @@
+<h1 mat-dialog-title *ngIf="!isLoading" class="promociones-title">
+  ¡Promociones Exclusivas!
+  <button class="close-button" (click)="onNoClick()">×</button>
+</h1>
+
+<!-- <h1 mat-dialog-title *ngIf="!isLoading" class="promociones-title">
+  ¡10 cosas que me enamoraron profundamente de ti, mi linda!
+  <button class="close-button" (click)="onNoClick()">×</button>
+</h1> -->
+
+<div *ngIf="!isLoading">
+  <!-- Contenedor de contenido sin el desplazamiento adicional de mat-dialog-content -->
+  <div class="vertical-carousel">
+    <div class="carousel-inner">
+      <div
+        *ngFor="let imageUrl of images; let i = index"
+        class="carousel-slide"
+        [class.active]="i === currentIndex"
+        (click)="verImagen(imageUrl)"
+      >
+
+        <div class="promo-banner">
+          <img [src]="imageUrl" alt="Promoción" class="carousel-image lazy-load">
+          <!-- <div class="promo-label">Oferta Especial</div> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="isLoading" class="loading-message">Cargando promociones...</div> -->

@@ -1,0 +1,173 @@
+<h2 mat-dialog-title>
+    <mat-icon>edit</mat-icon> Editar Pedido #{{ pedido.idPedido }}
+</h2>
+
+<mat-dialog-content>
+
+    <div class="tabla-scroll">
+        <table mat-table [dataSource]="pedido.detallePedidos" class="mat-elevation-z1 minimal-table">
+
+
+            <ng-container matColumnDef="descripcionProducto">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-icon>shopping_bag</mat-icon> Producto
+                </th>
+                <td mat-cell *matCellDef="let d">{{ d.descripcionProducto }}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="cantidad">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-icon>pin</mat-icon> Cantidad
+                </th>
+                <td mat-cell *matCellDef="let d">
+                    <div class="cantidad-control">
+                        <button mat-icon-button clase="disminuir" (click)="cambiarCantidad(d, -1)"
+                            [disabled]="d.cantidad <= 1" matTooltip="Disminuir" class="disminuir">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+
+                        <span class="cantidad-texto">{{ d.cantidad }}</span>
+
+                        <button mat-icon-button clase="aumentar" (click)="cambiarCantidad(d, 1)" matTooltip="Aumentar"
+                            class="aumentar">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="precioUnitarioTexto">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-icon>attach_money</mat-icon> Precio
+                </th>
+                <td mat-cell *matCellDef="let d">{{ formatearNumero(d.precioUnitarioTexto) }}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="unidadMedidaTexto">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-icon>straighten</mat-icon> Unidad
+                </th>
+                <td mat-cell *matCellDef="let d">{{ d.unidadMedidaTexto }}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="subTotal">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-icon>calculate</mat-icon> SubTotal
+                </th>
+                <td mat-cell *matCellDef="let d">{{ calcularTotalCaja(d) }}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="comentario">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-icon>comment</mat-icon> Comentario General
+                </th>
+                <!-- <td mat-cell *matCellDef="let d">{{ d.comentario || 'Sin comentario' }}</td> -->
+                <td mat-cell *matCellDef="let d">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Comentario</mat-label>
+                        <textarea matInput [(ngModel)]="d.comentario" [disabled]="d.unidadMedidaTexto === 'Unitario'"
+                            rows="2" placeholder="Sin comentario"
+                            [matTooltip]="d.unidadMedidaTexto === 'Unitario' ? 'Los productos unitarios no permiten comentarios' : ''"></textarea>
+                    </mat-form-field>
+                </td>
+
+            </ng-container>
+
+
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-icon>settings</mat-icon> Acciones
+                </th>
+                <td mat-cell *matCellDef="let d">
+                    <button mat-icon-button color="warn" (click)="eliminarProducto(d)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="columnasDetalle"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasDetalle;"></tr>
+        </table>
+    </div>
+
+    <div style="margin-top: 15px; text-align: right; font-size: 18px; font-weight: bold;">
+        Total general: {{ calcularTotalGeneral() }}
+    </div>
+
+
+    <h3 style="margin-top: 20px;">
+        <mat-icon>add_shopping_cart</mat-icon> Agregar Producto
+    </h3>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+        <!-- Buscar producto -->
+        <mat-form-field appearance="fill" style="flex: 1 1 250px;">
+            <mat-label><mat-icon>search</mat-icon> Buscar producto</mat-label>
+            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="nombreProductoBuscado"
+                (ngModelChange)="filtrarProductosPorNombre()" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarProducto($event)"
+                [displayWith]="mostrarNombreProducto">
+                <mat-option *ngFor="let prod of productosFiltrados" [value]="prod">
+                    {{ prod.nombre }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="flex: 1 1 100px;">
+            <mat-label><mat-icon>pin</mat-icon>Precio</mat-label>
+            <input matInput type="text" min="1" [(ngModel)]="this.precioUnitarioNormalizado" name="precio"
+                [disabled]="true" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="flex: 1 1 100px;">
+            <mat-label><mat-icon>pin</mat-icon>Precio Porcion</mat-label>
+            <input matInput type="text" min="1" [(ngModel)]="this.precioPorcionNormalizado" name="Precio porcion"
+                [disabled]="true" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="flex: 1 1 100px;">
+            <mat-label><mat-icon>pin</mat-icon> Cantidad</mat-label>
+            <input matInput type="number" min="1" [(ngModel)]="nuevoProducto.cantidad" name="cantidad" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="flex: 1 1 100px;">
+            <mat-label><mat-icon>pin</mat-icon>Stock Disponible</mat-label>
+            <input matInput type="number" min="1" [(ngModel)]="this.stockProductoBuscado" name="stock"
+                [disabled]="true" />
+        </mat-form-field>
+
+        <mat-checkbox color="warn" class="ver2" matTooltip="Seleccionar una porcion" matTooltipPosition="above"
+            #checkboxTooltip="matTooltip" [(ngModel)]="precioPorPorcionSeleccionado[nuevoProducto.idProducto!]"
+            [disabled]="this.tienePorcion == 0">
+        </mat-checkbox>
+
+        <mat-form-field appearance="fill" style="flex: 1 1 100%;">
+            <mat-label><mat-icon>comment</mat-icon> Comentario</mat-label>
+            <textarea matInput [(ngModel)]="nuevoProducto.comentario" name="comentario" rows="2"></textarea>
+        </mat-form-field>
+
+
+        <div style="flex: 1 1 100%; text-align: right;">
+            <button mat-raised-button color="primary" (click)="agregarProductoDesdeFormulario()">
+                <mat-icon>add_circle</mat-icon> Agregar Producto
+            </button>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <button mat-raised-button color="primary" (click)="guardar()">
+        <mat-icon>save</mat-icon> Guardar Cambios
+    </button>
+
+    <button mat-button color="warn" (click)="cancelar()">
+        <mat-icon>close</mat-icon> Cancelar
+    </button>
+
+</mat-dialog-actions>

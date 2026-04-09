@@ -1,0 +1,69 @@
+<!-- header con título + botón cerrar -->
+<div class="dialog-header">
+  <h2 mat-dialog-title class="titulo">Editar domicilio</h2>
+  <!-- <button mat-icon-button class="close-btn" color="warn" (click)="onCancel()" aria-label="Cerrar">
+    <mat-icon>close</mat-icon>
+  </button> -->
+</div>
+
+<mat-dialog-content class="contenido">
+  <form [formGroup]="form" (ngSubmit)="onSave()">
+
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="name" />
+      <mat-icon matSuffix class="icono-nombre">person</mat-icon>
+      <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+        Nombre obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="telefono" inputmode="tel" />
+      <mat-icon matSuffix class="icono-telefono">phone</mat-icon>
+      <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+        Teléfono obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="direccion" autocomplete="street-address" />
+      <mat-icon matSuffix class="icono-direccion">home</mat-icon>
+      <mat-error *ngIf="form.get('direccion')?.hasError('required')">
+        Dirección obligatoria
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Referencia</mat-label>
+      <input matInput formControlName="referencia" />
+      <mat-icon matSuffix class="icono-referencia">edit</mat-icon>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="porCobrar" class="por-cobrar">
+      <mat-icon class="icono-nombre">attach_money</mat-icon>
+      Domicilios por cobrar
+    </mat-checkbox>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="actions">
+
+
+  <div class="guardar-centro">
+    <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="onSave()">
+      <mat-icon class="icon-left">save</mat-icon>
+      Guardar
+    </button>
+  </div>
+
+
+  <button mat-raised-button color="warn" type="button" class="cancelar" (click)="onCancel()">
+    Cancelar
+  </button>
+
+</mat-dialog-actions>

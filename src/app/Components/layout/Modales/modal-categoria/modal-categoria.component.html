@@ -1,0 +1,40 @@
+<h2 mat-dialog-title style="text-align: center;">{{tituloAccion}} Categoria</h2>
+
+<mat-dialog-content [ngStyle]="{'width': '100%', 'max-width.px': 430, 'height.px': modoEdicion ? 180 : 220, 'overflow-y': 'auto'}">
+  <form [formGroup]="formularioCategoria" class="form-container">
+    <mat-grid-list cols="1" rowHeight="90px">
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput autocomplete="off" formControlName="nombre">
+        <mat-icon matSuffix>category</mat-icon>
+        <mat-error *ngIf="formularioCategoria.get('nombre')?.hasError('letrasSinNumerosValidator')">
+          No se permiten números en el nombre.
+        </mat-error>
+        <mat-error *ngIf="formularioCategoria.get('nombre')?.hasError('maxlength')">
+          El nombre no puede exceder los 40 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="!modoEdicion" class="full-width" appearance="fill">
+        <mat-label>Estado</mat-label>
+        <mat-select asp-for="esActivo" formControlName="esActivo">
+          <mat-option value="1">
+            <mat-icon class="icon-green">check_circle</mat-icon> Activo
+          </mat-option>
+          <mat-option value="0">
+            <mat-icon class="icon-red">highlight_off</mat-icon> No Activo
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-list>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-raised-button class="agregar" [disabled]="formularioCategoria.invalid" (click)="guardarEditar_Categoria()">
+    <mat-icon>save</mat-icon> {{botonAccion}}
+  </button>
+  <button mat-raised-button mat-dialog-close color="warn">
+    <mat-icon>close</mat-icon> Volver
+  </button>
+</mat-dialog-actions>

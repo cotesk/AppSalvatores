@@ -1,0 +1,49 @@
+<h2 class="titulo-formulario">Editar Pedido</h2>
+
+<form [formGroup]="formularioEditarPedido" (ngSubmit)="guardarCambios()" class="formulario-pedido">
+  <!-- Tipo de pedido -->
+  <mat-form-field appearance="fill">
+    <mat-label>Tipo de pedido</mat-label>
+    <mat-select formControlName="tipoPedido">
+      <mat-option value="Local">
+        <mat-icon class="icon-local">store</mat-icon> Local
+      </mat-option>
+      <mat-option value="Domicilio">
+        <mat-icon class="icon-domi">motorcycle</mat-icon> Domicilio
+      </mat-option>
+      <mat-option value="Recoger">
+        <mat-icon class="icon-reco">shopping_bag</mat-icon> Recoger
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Mesa -->
+  <mat-form-field appearance="fill">
+    <mat-label>Mesa</mat-label>
+    <mat-select formControlName="idMesa">
+      <mat-option *ngFor="let item of listaMesas" [value]="item.idMesa">
+        {{ item.nombreMesa }}
+      </mat-option>
+    </mat-select>
+    <mat-icon matSuffix>table_restaurant</mat-icon>
+  </mat-form-field>
+
+
+  <!-- Comentario -->
+  <mat-form-field appearance="fill">
+    <mat-label>Comentario</mat-label>
+    <textarea matInput formControlName="comentarioGeneral" rows="3"></textarea>
+  </mat-form-field>
+
+
+
+  <!-- Botón -->
+  <div class="botones-accion">
+    <button mat-flat-button class="agregar" type="submit">
+      <mat-icon>save</mat-icon>Guardar
+    </button>
+      <button mat-raised-button mat-dialog-close color="warn">
+      <mat-icon>close</mat-icon> Volver
+    </button>
+  </div>
+</form>

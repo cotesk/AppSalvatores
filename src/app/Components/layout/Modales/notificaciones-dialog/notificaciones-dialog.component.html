@@ -1,0 +1,41 @@
+<div id="notificaciones-dialog-container" class="noti-container">
+  <h2 class="titulo-principal">🔔 Productos con bajo stock</h2>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Stock</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let producto of productosDePagina()">
+          <td>
+            <img [src]="producto.imagenUrl![0]"
+                 class="imagen-producto"
+                 (click)="verImagen(producto)">
+          </td>
+
+          <td>{{ producto.nombre | slice:0:60 }}</td>
+
+          <td [ngClass]="{'texto-rojo': producto.stock === 0}">
+            {{ producto.stock === 0 ? 'Agotado' : producto.stock }}
+          </td>
+
+          <td>{{ formatearNumero(producto.precio) }} $</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <mat-paginator
+    [length]="productos.length"
+    [pageSize]="productosPorPagina"
+    [pageSizeOptions]="[3]"
+    (page)="cambiarPaginaDesdePaginador($event)">
+  </mat-paginator>
+</div>

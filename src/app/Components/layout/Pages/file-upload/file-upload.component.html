@@ -1,0 +1,51 @@
+
+<mat-dialog-content class="dialog-content">
+  <form  style="width: 350px; margin: auto; text-align: center;">
+    <h1>Subir Reportes</h1>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Subir Archivo</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="file-input-container">
+        <mat-icon>attach_file</mat-icon>
+        <span>{{ fileToUpload ? fileToUpload.name : 'Seleccionar archivo' }}</span>
+        <input type="file" (change)="handleFileInput($event)" #fileInput accept=".pdf, .xlsx"/>
+        <button mat-icon-button (click)="fileInput.click()" matTooltip="Subir archivo">
+          <mat-icon>cloud_upload</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+<br>
+    <!-- <mat-card-actions> -->
+      <div style="margin-top: 20px; display: flex; flex-direction: column;">
+        <button mat-raised-button class="agregar" (click)="uploadFile()"
+         [disabled]="!fileToUpload">
+         <mat-icon>file_upload</mat-icon>
+         Subir Archivo</button>
+      </div>
+      <div style="margin-top: 50px; display: flex; flex-direction: column;">
+        <button mat-raised-button color="warn" (click)="clearFile()">
+          <mat-icon matSuffix class="fas fa-trash"></mat-icon>
+          Limpiar</button>
+
+      </div>
+
+    <!-- </mat-card-actions> -->
+
+  </mat-card>
+
+</form>
+</mat-dialog-content>
+
+<!-- <div *ngIf="archivoDescargado">
+  <h2>Descargar Archivo</h2>
+  <button (click)="downloadFile(archivoDescargado.id)">Descargar Archivo</button>
+  <div>
+    <strong>ID:</strong> {{ archivoDescargado.id }}<br>
+    <strong>Nombre:</strong> {{ archivoDescargado.nombre }}<br>
+    <strong>Tipo:</strong> {{ archivoDescargado.tipo }}<br>
+    <strong>Datos:</strong> {{ archivoDescargado.datos }}
+  </div>
+</div> -->

@@ -1,0 +1,133 @@
+<div class="container">
+  <h2 mat-dialog-title class="texto">Consulta tu compra</h2>
+
+  <form [formGroup]="formularioCompraOnline" (ngSubmit)="buscarCompraCorreo()" class="minimalist-correo">
+    <mat-form-field appearance="fill">
+      <mat-label>Correo Electrónico</mat-label>
+      <mat-icon matPrefix>email</mat-icon>
+      <input matInput formControlName="correo" required>
+      <mat-error *ngIf="formularioCompraOnline.get('correo')?.invalid && formularioCompraOnline.get('correo')?.touched">
+        El correo es obligatorio y debe ser válido.
+      </mat-error>
+    </mat-form-field>
+
+
+    <button mat-raised-button class="agregar" [disabled]="formularioCompraOnline.get('correo')?.invalid">
+
+      <mat-icon>search</mat-icon>
+      Buscar</button>
+  </form>
+
+  <mat-table [dataSource]="dataSource" class="tabla centrar-tabla" *ngIf="purchases.length > 0"
+    style=" text-align: center;">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;"> ID
+      </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style=" text-align: center;"> {{ purchase.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nameCliente">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;"> Nombre
+        del cliente </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style=" text-align: center;"> {{ purchase.nameCliente }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="customerEmail">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;"> Correo
+      </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style=" text-align: center;"> {{ purchase.customerEmail }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="totalAmount">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;"> Total
+      </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style=" text-align: center;"> {{ formatearNumero(purchase.totalAmount)+ " $"
+        }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="purchaseDate">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;"> Fecha
+      </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style=" text-align: center;"> {{ formatDate(purchase.purchaseDate) }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;">
+        Estado
+      </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style="text-align: center;">
+        <span [ngStyle]="{
+            'background-color': getStatusColor(purchase.status),
+            'color': 'white'
+          }" style="
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+          ">
+          {{ purchase.status }}
+        </span>
+      </mat-cell>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="accion">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;">
+        Reembolso
+      </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style="text-align: center;">
+        <div class="center-button">
+          <button mat-icon-button *ngIf="purchase.status === 'Reembolsado' || purchase.status === 'Completada' ||
+            purchase.status === 'Preparación y Empaque' || purchase.status === 'En Camino' " [ngStyle]="{
+                'background-color': getStatusColor(purchase.status),
+                 'color': 'white',
+               'border-radius': '50%',
+               'width': '40px',
+                'height': '40px',
+                'display': 'flex',
+               ' justify-content': 'center',
+                'align-items': 'center',
+                'margin-left': '5px',
+                }" (click)="procesarReembolso(purchase.id, purchase.status)">
+
+            <i class="fas fa-check-circle" *ngIf="purchase.status === 'Completada'" style="color: white"></i>
+            <i class="fas fa-exchange-alt" *ngIf="purchase.status === 'Reembolsado'" style="color: white"></i>
+            <i class="fas fa-tools" *ngIf="purchase.status === 'Preparación y Empaque'" style="color: white"></i>
+            <i class="fas fa-truck" *ngIf="purchase.status === 'En Camino'" style="color: white"></i>
+          </button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+
+
+
+
+    <ng-container matColumnDef="products">
+      <mat-header-cell *matHeaderCellDef style="background-color: #2c3e50; color: white; text-align: center;"> Productos
+      </mat-header-cell>
+      <mat-cell *matCellDef="let purchase" style=" text-align: center;">
+        <ul>
+          <li *ngFor="let product of purchase.productItems">
+            {{ product.productName | slice:0:40 }}{{ product.productName.length > 40 ? '...' : '' }} -
+            Cantidad: {{ product.quantity }} -
+            Precio: {{ formatearNumero(product.amount) + " $" }}
+          </li>
+
+        </ul>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row
+      *matHeaderRowDef="['id', 'nameCliente','customerEmail', 'totalAmount', 'purchaseDate', 'status', 'accion','products']"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: ['id', 'nameCliente','customerEmail', 'totalAmount', 'purchaseDate', 'status', 'accion', 'products']"></mat-row>
+  </mat-table>
+
+  <mat-paginator class="pagina" [pageSize]="2" [pageSizeOptions]="[2, 4, 6]" showFirstLastButtons></mat-paginator>
+
+</div>
+<br>

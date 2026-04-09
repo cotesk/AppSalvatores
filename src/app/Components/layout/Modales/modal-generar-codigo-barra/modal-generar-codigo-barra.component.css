@@ -1,0 +1,35 @@
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón Cancelar */
+  color: #fff; /* Color del texto del botón Cancelar */
+  top: 0px;
+  left: 20px;
+
+}
+button.agregar:hover {
+  background-color:  rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+.minimalist-monto {
+
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 5px;
+    border-radius: 5px;
+    width: 46%;
+}
+
+@media (max-width: 768px) {
+  .input-container {
+    flex-direction: column;
+  }
+
+  .small-input {
+    width: 100%;
+  }
+  .minimalist-monto {
+    width: 40%;
+  }
+
+  .example-form {
+    padding: 10px;
+  }
+}

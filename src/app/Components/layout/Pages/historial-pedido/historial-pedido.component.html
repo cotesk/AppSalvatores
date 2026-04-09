@@ -1,0 +1,341 @@
+<h2 style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center;">🕒 Pedidos Pendientes</h2>
+
+
+<form class="filtro-pedidos" [formGroup]="filtroForm" *ngIf="rolDescripcion=='Administrador' ">
+  <mat-form-field appearance="fill" class="select">
+    <mat-label>Método de búsqueda</mat-label>
+    <mat-select formControlName="metodoBusqueda">
+      <mat-option value="">
+        <mat-icon class="icon-blue">select_all</mat-icon> &nbsp; Todos
+      </mat-option>
+
+      <mat-option value="pagado">
+        <mat-icon class="icon-green">paid</mat-icon> &nbsp; Pagado
+      </mat-option>
+
+      <mat-option value="cancelado">
+        <mat-icon class="icon-red">cancel</mat-icon> &nbsp; Cancelado
+      </mat-option>
+
+      <mat-option value="estadopedido">
+        <mat-icon class="icon-orange">assignment</mat-icon> &nbsp; Pendiente
+      </mat-option>
+
+      <!-- <mat-option value="estadopedido">
+        <mat-icon class="icon-orange">assignment</mat-icon> &nbsp; Estado del Pedido
+      </mat-option> -->
+
+      <mat-option value="tipopedido">
+        <mat-icon class="icon-blue">category</mat-icon> &nbsp; Tipo de Pedido
+      </mat-option>
+
+      <mat-option value="nombreusuario">
+        <mat-icon class="icon-purple">person</mat-icon> &nbsp; Nombre Usuario
+      </mat-option>
+
+      <mat-option value="nombremesa">
+        <mat-icon class="icon-naraja">table_restaurant</mat-icon> &nbsp; Nombre Mesa
+      </mat-option>
+
+      <mat-option value="fecha">
+        <mat-icon class="icon-blue">calendar_today</mat-icon> &nbsp; Fecha
+      </mat-option>
+
+      <mat-option (click)="generarPdfPedidos()">
+        <mat-icon class="icon-red fas fa-file-pdf fa-1x"></mat-icon>
+        <!-- <i class="fas fa-file-pdf fa-1x"></i> -->
+        Generar PDF
+      </mat-option>
+
+    </mat-select>
+  </mat-form-field>
+
+
+
+  <mat-form-field appearance="fill" *ngIf="
+  filtroForm.value.metodoBusqueda != 'fecha' &&
+  filtroForm.value.metodoBusqueda != 'cancelado' &&
+  filtroForm.value.metodoBusqueda != 'pagado' &&
+   filtroForm.value.metodoBusqueda != 'estadopedido' &&
+  filtroForm.value.metodoBusqueda != 'tipopedido' &&
+  filtroForm.value.metodoBusqueda != 'nombremesa' &&
+  filtroForm.value.metodoBusqueda != 'nombreusuario' &&
+  filtroForm.value.metodoBusqueda != ''
+">
+    <mat-label>Buscar término</mat-label>
+    <input matInput placeholder="Buscar..." formControlName="searchTerm">
+  </mat-form-field>
+
+
+
+  <mat-form-field *ngIf="filtroForm.value.metodoBusqueda =='nombremesa' ">
+    <input matInput type="text" placeholder="Buscar mesas" [matAutocomplete]="autoCliente" formControlName="mesa"
+      (focus)="mostrarListaMesa()" (input)="filtrarEntradaMesa($event)" [value]="mesaFiltrado">
+    <mat-autocomplete autoActiveFirstOption #autoCliente="matAutocomplete" (optionSelected)="mesaParaVenta($event)"
+      [displayWith]="mostrarMesas">
+      <mat-option *ngFor="let option of listaMesaFiltrada" [value]="option">
+        {{ option.nombreMesa }}
+        <hr *ngIf="!lastItem(option, listaMesaFiltrada)" class="separator">
+      </mat-option>
+    </mat-autocomplete>
+
+  </mat-form-field>
+
+
+  <mat-form-field *ngIf="filtroForm.value.metodoBusqueda =='nombreusuario' ">
+    <input matInput type="text" placeholder="Buscar usuarios" [matAutocomplete]="autoUsuarios" formControlName="usuario"
+      (focus)="mostrarListaUsuario()" (input)="filtrarEntradaUsuarios($event)" [value]="usuarioFiltrado">
+    <mat-autocomplete autoActiveFirstOption #autoUsuarios="matAutocomplete" (optionSelected)="ususarioParaVenta($event)"
+      [displayWith]="mostrarUsuario">
+      <mat-option *ngFor="let option of listaUsuarioFiltrada" [value]="option">
+        {{ option.nombreCompleto }}
+        <hr *ngIf="!lastItem(option, listaUsuarioFiltrada)" class="separator">
+      </mat-option>
+    </mat-autocomplete>
+
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" *ngIf="filtroForm.value.metodoBusqueda =='tipopedido' ">
+    <mat-label>Tipo de Pedido</mat-label>
+    <mat-select formControlName="tipoPedido" (selectionChange)="onTipoPedidoChange($event)">
+
+      <mat-option value="Local"><mat-icon class="icon-green">store</mat-icon> Local</mat-option>
+      <mat-option value="Domicilio"><mat-icon class="icon-blue">motorcycle</mat-icon> Domicilio</mat-option>
+      <mat-option value="Recoger"><mat-icon class="icon-orange">shopping_bag</mat-icon> Recoger</mat-option>
+
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill" *ngIf="filtroForm.value.metodoBusqueda=='fecha'">
+    <mat-label>Fecha Inicio</mat-label>
+    <input matInput autocomplete="off" formControlName="fechaInicio" [matDatepicker]="picker1">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+    <mat-error *ngIf="filtroForm.get('fechaInicio')?.hasError('required')">
+      La fecha de Inicio es obligatoria.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" *ngIf="filtroForm.value.metodoBusqueda=='fecha'">
+    <mat-label>Fecha fin</mat-label>
+    <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin">
+    <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFin></mat-datepicker>
+    <mat-error *ngIf="filtroForm.get('fechaFin')?.hasError('required')">
+      La fecha de fin es obligatoria.
+    </mat-error>
+    <mat-error *ngIf="filtroForm.get('fechaFin')?.hasError('fechaFinAntesDeInicio')">
+      La fecha de fin no puede ser anterior a la fecha de inicio.
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button [disabled]="filtroForm.value.metodoBusqueda == 'nombremesa' || 
+  filtroForm.value.metodoBusqueda == 'tipopedido' ||
+   filtroForm.value.metodoBusqueda == 'nombreusuario'  " class="agregar" type="submit"
+    (click)="obtenerPedidosPendientes()">
+    <mat-icon>search</mat-icon> Buscar
+  </button>
+</form>
+
+
+<mat-accordion *ngIf="listaPedidos.length > 0">
+  <mat-expansion-panel *ngFor="let pedido of listaPedidos" class="custom-panel">
+
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>receipt_long</mat-icon>
+        <strong>&nbsp;Pedido #{{ pedido.idPedido }}</strong> - {{ pedido.nombreUsuario }}
+      </mat-panel-title>
+      <mat-panel-description>
+        <mat-icon>table_restaurant</mat-icon> {{ pedido.nombreMesa }} •
+        <mat-icon>calendar_today</mat-icon> {{ pedido.fechaHora }} •
+
+        <mat-icon *ngIf="pedido.pagado" class="text-success">check_circle</mat-icon>
+        <mat-icon *ngIf="!pedido.pagado" class="text-warn">error_fill</mat-icon>
+        {{ pedido.pagado ? 'Pagado' : 'Sin pagar' }} •
+
+        <mat-icon *ngIf="pedido.estadoPedido== 'Anulado' " class="text-danger">sync</mat-icon>
+        <mat-icon *ngIf="pedido.estadoPedido== 'Pendiente' " class="text-warn">sync</mat-icon>
+        <mat-icon *ngIf="pedido.estadoPedido== 'Facturado' " class="text-success">sync</mat-icon>
+        Estado: {{ pedido.estadoPedido }} •
+
+
+
+        <mat-icon *ngIf="pedido.tipoPedido== 'Local' " class="text-success">store</mat-icon>
+        <mat-icon *ngIf="pedido.tipoPedido== 'Domicilio' " class="text-success">motorcycle</mat-icon>
+        <mat-icon *ngIf="pedido.tipoPedido== 'Recoger' " class="text-success">shopping_bag</mat-icon>
+        Tipo: {{ pedido.tipoPedido }} •
+
+        <mat-icon *ngIf="!pedido.cancelado" class="text-warn">cancel</mat-icon>
+        <mat-icon *ngIf="pedido.cancelado" class="text-danger">cancel</mat-icon>
+        Cancelado: {{ pedido.cancelado ? 'Sí' : 'No' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="detalle-info">
+      <p>
+        <mat-icon>table_restaurant</mat-icon>
+        <strong>Mesa:</strong> {{ pedido.nombreMesa }}
+      </p>
+      <p>
+        <mat-icon>comment</mat-icon>
+        <strong>Comentario:</strong> {{ pedido.comentarioGeneral || 'Sin comentario' }}
+      </p>
+      <button mat-icon-button color="warn" [disabled]="pedido.pagado || pedido.cancelado" (click)="anularPedido(pedido)"
+        matTooltip="Anular Pedido">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" [disabled]="pedido.pagado || pedido.cancelado"
+        (click)="editarSoloPedido(pedido)" matTooltip="Editar Pedido">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" [disabled]=" pedido.cancelado || pedido.tipoPedido != 'Domicilio' "
+        (click)="editarDomicilio(pedido)" matTooltip="Editar Domicilio">
+        <mat-icon>two_wheeler</mat-icon>
+      </button>
+    </div>
+
+    <table mat-table [dataSource]="pedido.detallePedidos" class="mat-elevation-z1 minimal-table">
+
+
+      <!-- ✅ CHECK -->
+      <ng-container matColumnDef="seleccionar">
+        <th mat-header-cell *matHeaderCellDef>✔</th>
+        <td mat-cell *matCellDef="let d">
+          <mat-checkbox [(ngModel)]="d.seleccionado" (change)="onSeleccionChange(d)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- ✅ CANTIDAD EDITABLE -->
+      <ng-container matColumnDef="cantidadEditar">
+        <th mat-header-cell *matHeaderCellDef>Cant.</th>
+        <td mat-cell *matCellDef="let d">
+          <input type="number" min="1" [max]="d.cantidad" [(ngModel)]="d.cantidadSeleccionada"
+            (input)="validarCantidad(d)" [disabled]="!d.seleccionado" style="width: 70px;">
+        </td>
+      </ng-container>
+
+      <!-- Columnas -->
+
+      <ng-container matColumnDef="descripcionProducto">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon>shopping_bag</mat-icon> Producto
+        </th>
+        <td mat-cell *matCellDef="let d">{{ d.descripcionProducto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon>pin</mat-icon> Cantidad
+        </th>
+        <td mat-cell *matCellDef="let d">{{ d.cantidad }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="precioUnitarioTexto">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon>attach_money</mat-icon> Precio
+        </th>
+        <td mat-cell *matCellDef="let d">{{ formatearNumero(d.precioUnitarioTexto) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="unidadMedidaTexto">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon>straighten</mat-icon> Unidad
+        </th>
+        <td mat-cell *matCellDef="let d">{{ d.unidadMedidaTexto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="subTotal">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon>calculate</mat-icon> SubTotal
+        </th>
+        <td mat-cell *matCellDef="let d">{{ calcularTotalCaja(d) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalTexto">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon>payments</mat-icon> Total
+        </th>
+        <td mat-cell *matCellDef="let d">{{ formatearNumero(d.totalTexto) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="comentario">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-icon>comment</mat-icon> Comentario
+        </th>
+        <td mat-cell *matCellDef="let d">{{ d.comentario || 'Sin comentario' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: center;">
+          <mat-icon>settings</mat-icon> Acciones
+        </th>
+        <td mat-cell *matCellDef="let element">
+
+          <button mat-icon-button color="primary" (click)="editarPedido(pedido)"
+            [disabled]="pedido.pagado || pedido.cancelado" matTooltip="Editar detalles del pedido">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <!-- <button mat-icon-button color="primary" (click)="probarBeep()"
+            [disabled]="pedido.pagado || pedido.cancelado" matTooltip="Editar detalles del pedido">
+            <mat-icon>settings</mat-icon>
+          </button> -->
+
+          <button mat-icon-button color="accent" (click)="verTicket(pedido)" matTooltip="Ver Ticket">
+            <mat-icon>confirmation_number</mat-icon>
+          </button>
+        </td>
+
+
+      </ng-container>
+
+
+      <!-- Filas -->
+      <tr mat-header-row *matHeaderRowDef="columnasDetalle"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnasDetalle;"></tr>
+    </table>
+
+    <div style="text-align: right; margin-top: 10px; font-size: 16px;">
+      <strong>Total seleccionado:</strong>
+      {{ formatearNumero(this.totalSeleccionado.toString()) }}
+    </div>
+
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div class="paginacion-pedidos">
+  <button mat-icon-button class="paginacion-btn" matTooltip="Primera página" (click)="cambiarPagina(1, 'inicio')"
+    [disabled]="paginaActual === 1">
+    <mat-icon>first_page</mat-icon>
+  </button>
+
+  <button mat-icon-button class="paginacion-btn" matTooltip="Página anterior" (click)="cambiarPagina(-1)"
+    [disabled]="paginaActual === 1">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <span class="paginacion-estado">
+    Página <strong>{{ paginaActual }}</strong> de <strong>{{ totalPaginas }}</strong>
+  </span>
+
+  <button mat-icon-button class="paginacion-btn" matTooltip="Página siguiente" (click)="cambiarPagina(1)"
+    [disabled]="paginaActual === totalPaginas">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <button mat-icon-button class="paginacion-btn" matTooltip="Última página" (click)="cambiarPagina(1, 'fin')"
+    [disabled]="paginaActual === totalPaginas">
+    <mat-icon>last_page</mat-icon>
+  </button>
+</div>
+
+<br>
+
+<p *ngIf="listaPedidos.length === 0" class="no-pedidos">No hay pedidos pendientes.</p>
+
+<footer class="footer">
+  <p>Copyright &copy; 2025 - Hecho con orgullo en Colombia. Todos los derechos reservados.</p>
+</footer>

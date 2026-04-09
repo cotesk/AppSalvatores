@@ -1,0 +1,90 @@
+.content {
+  padding-top: 10px;
+}
+.row {
+  display: flex;
+  gap: 10px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.action {
+  padding: 0px 25px 20px;
+  button {
+    flex: 1;
+  }
+}
+.preview-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative; /* Añade una posición relativa al contenedor */
+}
+
+.clear-image {
+  position: absolute;
+  top: 55px; /* Ajusta la posición vertical del botón según tus preferencias */
+  right: 55px; /* Ajusta la posición horizontal del botón según tus preferencias */
+  /* color: #f44336; */
+}
+.preview-image {
+  max-width: 300px;
+  max-height: 200px;
+  margin-top: 10px; /* Ajusta el margen superior según tus preferencias */
+}
+
+
+
+
+
+/* Agrega estas reglas al final del archivo modal-producto.component.css */
+.custom-upload-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-upload-button {
+  background-color: #7e3f88;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-upload-button:hover {
+  background-color: #7e3f88;
+}
+
+.mat-input-file {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-name-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 28px; /* Ajusta el margen superior a tu preferencia */
+}
+
+.file-name-container input {
+  flex: 1;
+}
+
+.file-name-container button {
+  margin-left: 5px; /* Ajusta el margen izquierdo a tu preferencia */
+}
+
+/* Añade este estilo para alinear el icono más abajo */
+.custom-upload-container mat-icon {
+  margin-top: 5px; /* Ajusta el margen superior a tu preferencia */
+}

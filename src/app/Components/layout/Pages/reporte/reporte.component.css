@@ -1,0 +1,213 @@
+
+
+
+table {
+  width: 100%;
+}
+
+
+.campos-formulario{
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+}
+/* .boton-buscar{
+  width: 150px;
+  margin-top: 15px;
+} */
+
+mat-form-field{
+  width: 100%;
+  margin-top: 10px;
+}
+/* Estilos para los datepickers */
+.mat-datepicker-toggle {
+  color: #2196F3; /* Color del icono del datepicker */
+}
+
+
+button:hover {
+  background-color: rgb(79, 96, 113);
+}
+button[color="warn"]:hover {
+  background-color: #9e3434; /* Cambia el color al pasar el ratón sobre el botón */
+}
+button[color="primary"]:hover {
+  background-color: #0e2465; /* Cambia el color al pasar el ratón sobre el botón */
+}
+button[color="accent"] {
+  background-color: #358637; /* Verde similar al color de Excel */
+  color: #fff; /* Texto en blanco para mayor contraste */
+}
+
+button[color="accent"]:hover {
+  background-color: #194f1c; /* Cambia el color al pasar el ratón sobre el botón */
+}
+button[color="accent"][disabled] {
+  background-color: #ccc; /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666; /* Color del texto en gris cuando está deshabilitado */
+}
+
+button[color="accent"][disabled]:hover {
+  background-color: #ccc; /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}
+
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón Cancelar */
+  color: #fff; /* Color del texto del botón Cancelar */
+  width: 10%;
+  margin-top: 15px;
+}
+button.agregar:hover {
+  background-color:  rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+button.ver {
+  /* background-color: #9b8f67;  */
+  color: #73673e; /* Color del texto del botón Cancelar */
+}
+button.ver:hover {
+  background-color:  #e0ddbf; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+button.agregar[disabled] {
+  background-color: #ccc; /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666; /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc; /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}
+
+
+.generar-botones {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Ajusta el espacio según tus preferencias */
+}
+
+.footer {
+  position: relative;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  background-color: #2c3e50;
+  padding: 10px;
+  left: -20px;
+  /* Salir del contenedor principal */
+  width: calc(100% + 20px);
+}
+/* Estilos para los datepickers */
+.mat-datepicker-toggle {
+  color: #2196F3;
+  /* Color del icono del datepicker */
+}
+
+::ng-deep .mat-calendar-previous-button,
+::ng-deep .mat-calendar-next-button {
+  color: white !important; /* Cambia el color de las flechas */
+  fill: white !important;  /* Asegura que el SVG también sea blanco */
+}
+/* Opcional: también puedes hacer el hover blanco */
+::ng-deep .mat-calendar-previous-button:hover,
+::ng-deep .mat-calendar-next-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* el color para los dias de la semana */
+::ng-deep .mat-calendar-table-header th {
+  color: black !important;
+  font-weight: bold; /* opcional: los hace más visibles */
+}
+
+
+::ng-deep .mat-calendar-header {
+  margin: 0;
+  background-color: #2c3e50 !important;
+}
+
+::ng-deep .mat-calendar-arrow {
+  fill: rgb(255, 255, 255) !important;
+}
+
+/* el color en el mes */
+
+::ng-deep .mat-calendar-body-label {
+  color: rgb(26, 25, 25) !important;
+}
+::ng-deep .mat-calendar-table-header{
+  color: rgb(254, 6, 6) !important;
+}
+
+::ng-deep .mat-mdc-button.mat-unthemed {
+  --mdc-text-button-label-text-color: rgb(255, 255, 255);
+}
+
+.primary-icon { color: #3f51b5; }   /* azul para fecha */
+.accent-icon { color: #ff9800; }    /* naranja para número */
+.warn-icon { color: #e91e63; }      /* rosado para cliente */
+
+
+
+
+/* para que no se salgan las tabla del mat-card en vista movil */
+.table-container {
+   border-radius: 6px;
+  overflow-x: auto; /* Permite el desplazamiento horizontal */
+  -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos táctiles */
+  margin: 0; /* Asegúrate de que no haya márgenes que afecten el tamaño */
+  padding: 0; /* Asegúrate de que no haya rellenos que afecten el tamaño */
+  width: 100%; /* Asegúrate de que el ancho sea el 100% */
+}
+
+@media only screen and (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+    margin: 10px 0;
+  }
+
+  .campos-formulario {
+    display: flex;
+    flex-direction: column; /* Cambiar a columna */
+    gap: 10px; /* Espaciado entre los elementos */
+  }
+
+
+
+  .boton-buscar, .agregar {
+    text-align: center;
+    width: 35%;
+  }
+  .mat-icon {
+    font-size: 1.2rem;
+  }
+  table {
+    width: 100%;
+
+  }
+  .paginacion {
+    margin-bottom: 15px; /* Añadir margen inferior a la paginación para evitar que se mezcle con el campo de búsqueda */
+  }
+  mat-card {
+    margin: 10px;
+    width: calc(100% - 20px); /* Ajusta el ancho del mat-card */
+    font-size: larger;
+
+  }
+
+  /* Estilos adicionales para la tabla en dispositivos móviles */
+  .table-container {
+    margin: 0 -15px; /* Ajusta el margen para que el contenedor se alinee bien */
+  }
+
+  .footer {
+   font-size: 10px;
+    position: relative;
+    left: -20px;
+    /* Salir del contenedor principal */
+    width: calc(97% + 31px);
+    /* Hacerlo más largo que el mat-card */
+    background-color: #2c3e50;
+    /* Cambiar color si es necesario */
+  }
+}

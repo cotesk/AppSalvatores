@@ -1,0 +1,60 @@
+<h2 style="text-align: center;">Carrito de Compras</h2>
+<!-- <button mat-icon-button class="eliminar" (click)="close()">
+  <mat-icon>close</mat-icon>
+</button> -->
+<div class="cart-container">
+
+  <div *ngIf="cartItems.length === 0" class="empty-cart-message mat-body-1">El carrito está vacío.</div>
+  <div *ngFor="let product of cartItems; let i = index" class="cart-item mat-elevation-z2">
+    <img [src]="product.imagenUrl" alt="{{product.nombre}}" class="product-image"
+      (click)="verImagen(product)">
+    <div class="product-details">
+      <strong>{{product.nombre | slice:0:40}}...</strong>
+
+      <!-- Precio unitario: {{ formatearNumero2(calcularPrecio(product)) }}$<br> -->
+      <div class="price-quantity-container">
+        <br>
+        <mat-form-field appearance="fill" class="small-input">
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" [(ngModel)]="product.stock" (change)="actualizarCantidad(product)">
+        </mat-form-field>
+        <div class="price-info">
+          Precio:  {{ formatearNumero2(calcularPrecio(product)) }} $
+
+        </div>
+        <div>
+          Subtotal: <span style="color: red;"> {{ formatearNumero2(calcularSubtotal(product)) }} </span> <span
+          style="color: green;"> $</span>
+        </div>
+      </div>
+      <br>
+      <!-- Subtotal: {{ formatearNumero2(calcularSubtotal(product)) }}$ -->
+    </div>
+    <button mat-icon-button color="warn" aria-label="Eliminar" (click)="eliminarProducto(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="cartItems.length > 0" class="cart-total mat-body-2">
+    <strong>Total: <span style="color: red;"> {{ formatearNumero2(total) }} </span> <span style="color: green;">
+        $</span></strong>
+  </div>
+
+  <div id="boton-pago"></div>
+
+  <mat-dialog-actions class="dialog-actions" *ngIf="cartItems.length > 0">
+    <span class="spacer"></span>
+    <!-- <button mat-raised-button class="agregar" (click)="solicitarCompra()">
+      <mat-icon>shopping_cart</mat-icon>
+      Solicitar Compra
+    </button> -->
+    <button mat-raised-button class="agregar" (click)="MercadoPago()">
+      <mat-icon>shopping_cart</mat-icon>
+      Solicitar Compra
+    </button>
+    <button mat-button class="eliminar" (click)="limpiarCarrito()">
+      <mat-icon>close</mat-icon>
+      Limpiar Carrito
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,361 @@
+<h1 style="margin:10px 0px 40px ; text-align: center;">Galería de Productos</h1>
+
+
+
+<!-- <div class="categorias-container">
+  <h3>Categorías</h3>
+  <div *ngFor="let categoria of listaCategoriaFiltro" class="categoria-item">
+    <mat-checkbox
+      (change)="onCategoriaSelected(categoria, $event)"
+      [checked]="categoria.idCategoria === categoriaSeleccionada"
+      [(ngModel)]="categoria.seleccionada">
+      <span>{{ categoria.nombre }}</span>
+    </mat-checkbox>
+  </div>
+</div> -->
+
+<mat-form-field class="minimalist-Metodo">
+  <mat-label>Método de filtrado</mat-label>
+  <mat-select [(ngModel)]="metodo" (selectionChange)="onChangeTipoBusqueda4($event)">
+    <mat-option value="Precio">
+      <mat-icon class="icon-green">attach_money</mat-icon> Precio
+    </mat-option>
+    <mat-option value="Categoria">
+      <mat-icon class="icon-red">local_offer</mat-icon> Categoría
+    </mat-option>
+    <mat-option value="Descuento">
+      <mat-icon class="icon-naraja">percent</mat-icon> Descuento
+    </mat-option>
+    <mat-option value="Nombre">
+      <mat-icon class="icon-blue">local_offer</mat-icon> Nombre
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<div style="margin-bottom: 20px;">
+  <mat-form-field class="minimalist-precio" appearance="fill" *ngIf="metodoBusqueda === 'Precio'">
+    <mat-icon matPrefix class="icon-green">attach_money</mat-icon>
+    <mat-label>Filtrar por precio</mat-label>
+    <input matInput type="number" placeholder="Ingrese un precio" [(ngModel)]="precioFiltro"
+      (input)="aplicarFiltroCard()">
+
+  </mat-form-field>
+  <!-- <button mat-raised-button color="primary" (click)="aplicarFiltro()">Aplicar Cambio</button> -->
+</div>
+
+<div style="margin-bottom: 20px;">
+  <mat-form-field class="minimalist-precio" appearance="fill" *ngIf="metodoBusqueda === 'Nombre'">
+    <mat-icon matPrefix class="icon-blue">local_offer</mat-icon>
+    <mat-label>Filtrar por Nombre</mat-label>
+    <input matInput type="text" placeholder="Ingrese un nombre" [(ngModel)]="nombreFiltro"
+      (input)="aplicarFiltroCard()">
+
+  </mat-form-field>
+  <!-- <button mat-raised-button color="primary" (click)="aplicarFiltro()">Aplicar Cambio</button> -->
+</div>
+
+<div style="margin-bottom: 20px;">
+  <mat-form-field class="minimalist-descuento" appearance="fill" *ngIf="metodoBusqueda === 'Descuento'">
+    <mat-icon matPrefix class="icon-naraja">percent</mat-icon>
+    <mat-label>Filtrar por descuento</mat-label>
+    <input matInput type="number" maxlength="4" placeholder="Ingrese un descuento" #descuentoInput="ngModel"
+      [(ngModel)]="descuentoFiltro" (input)="aplicarFiltroCard()">
+
+    <!-- <mat-error *ngIf="descuentoInput.invalid && descuentoInput.dirty">
+      El descuento debe ser un valor entre 0 y 100.
+    </mat-error> -->
+  </mat-form-field>
+  <!-- <button mat-raised-button color="primary" (click)="aplicarFiltro()">Aplicar Cambio</button> -->
+</div>
+
+
+
+<!-- <mat-form-field appearance="fill" *ngIf="metodoBusqueda === 'Categoria'" class="minimalist-Categoria">
+  <mat-icon matPrefix class="icon-red">local_offer</mat-icon>
+  <mat-label>Seleccionar Categoría</mat-label>
+  <mat-select [(value)]="categoriaSeleccionada" (selectionChange)="aplicarFiltroCard()">
+    <mat-option [value]="null">Todos</mat-option>
+    <mat-option *ngFor="let categoria of categorias" [value]="categoria.idCategoria">
+      {{ categoria.nombre }}
+    </mat-option>
+  </mat-select>
+</mat-form-field> -->
+
+<mat-form-field appearance="fill" *ngIf="metodoBusqueda === 'Categoria'" class="minimalist-Categoria">
+  <mat-label>Seleccionar Categoría</mat-label>
+  <input matInput type="text" placeholder="Buscar..." aria-label="Number" [matAutocomplete]="auto"
+    formControlName="categoria" (focus)="mostrarListaCategoria()" (input)="filtrarEntrada($event)"
+    >
+
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+    (optionSelected)="onCategoriaSelected($event.option.value)"
+    [displayWith]="mostrarCategoria">
+    <mat-option *ngFor="let option of listaCategoriaFiltro" [value]="option">
+      {{ option.nombre.length > 30 ? option.nombre.slice(0, 30) + '...' : option.nombre }}
+      <hr *ngIf="!lastItem(option, listaCategoriaFiltro)" class="separator">
+    </mat-option>
+  </mat-autocomplete>
+
+  <button mat-icon-button matSuffix aria-label="Buscar" class="futuristic-search-button" (click)="aplicarFiltroCard()">
+    <mat-icon>search</mat-icon>
+  </button>
+</mat-form-field>
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<mat-card style="border: none; box-shadow: none; margin: 20px 40px 40px 40px;">
+
+  <div class="product-list">
+
+    <mat-card class="product-card" *ngFor="let product of productosFiltrados; trackBy: trackByProducto">
+      <!-- *ngFor="let product of productosFiltrados.slice((page - 1) * pageSize, page * pageSize); trackBy: trackByProducto"> -->
+
+
+      <div
+        style="position: absolute; top: 10px; right: 10px; background-color: red; color: white; padding: 5px; border-radius: 5px;">
+        {{ formatearNumero(product.descuentos) }}% OFF
+      </div>
+      <!-- Botón agregar al carrito en la esquina superior izquierda -->
+      <button mat-icon-button class="carrito"
+        style="position: absolute; top: 10px; left: 10px; border-radius: 50%; padding: 10px;"
+        (click)="addToCart(product, precioPorCajaSeleccionado[product.idProducto])"
+        matTooltip="Agregar al carrito"
+        matTooltipPosition="above"
+        >
+        <i class="fas fa-shopping-cart"></i>
+      </button>
+      <!-- <div class="product-image-container">
+        <img [src]="decodeBase64ToImageUrl(product.imageData!)" alt="Product Image" class="product-image" loading="lazy"
+          (click)="verImagen(product)">
+      </div>  -->
+      <div class="product-image-container" style="background-color: transparent;">
+        <img [src]=" product.imagenUrl" alt="Product Image" class="product-image"
+          style="object-fit: contain; background-color: transparent;" (click)="verImagen(product)" loading="lazy">
+
+
+            <!-- <button class="payment-button" (click)="MercadoPago(product)"  matTooltip="Pagar Online">
+              <i class="fas fa-credit-card"></i>
+            </button > -->
+            <button class="payment-button" (click)="MercadoPago(product)" matTooltip="Pagar Online">
+              <img src="assets/Images/MercadoPago.png" alt="Mercado Pago" class="mercado-pago-icon">
+          </button>
+
+
+        <!-- Botón con icono de signo de interrogación -->
+        <button mat-icon-button class="ver" (click)="verCaracteristicas(product)"
+        matTooltip="Ver Características" matTooltipPosition="above">
+          <mat-icon>help</mat-icon> <!-- Cambiado a signo de interrogación -->
+        </button>
+
+
+        <div style="margin-top: 20px;">
+          <mat-checkbox color="warn"
+            class="ver2"
+            matTooltip="Seleccionar toda una caja"
+            #checkboxTooltip="matTooltip"
+            [disabled]="product.unidadMedida === 'Unitario'"
+            [(ngModel)]="precioPorCajaSeleccionado[product.idProducto]"
+            (change)="calcularSubtotal(product)"
+            (click)="mostrarTooltip(checkboxTooltip)"
+            >
+
+          </mat-checkbox>
+        </div>
+
+
+      </div>
+
+
+      <div class="content">
+
+        <h3 class="product-title">
+          {{ product.nombre.length > 40 ? product.nombre.slice(0, 40) + '...' : product.nombre }}
+        </h3>
+        <br>
+        <!-- <button mat-icon-button class="ver" (click)="verCaracteristicas(product)" matTooltip="Ver Características">
+          <mat-icon >visibility</mat-icon>
+        </button> -->
+        <!-- <div class="precio-container">
+          <p class="precio-text">Precio: {{ formatearNumero(product.precio) }} $</p>
+          <div class="linea-descuento" *ngIf="hasDescuento(product)"></div>
+        </div> -->
+        <div class="precio-container"
+          style="display: flex; flex-direction: column; align-items: flex-start; position: relative; margin-top: 10px;">
+          <div class="linea-descuento" *ngIf="hasDescuento(product)"></div>
+          <p class="precio-text" style="margin: 0; font-size: 14px; color: #2d2d2d;">Precio: {{
+            formatearNumero(product.precio) }} $</p>
+        <p style="margin: 0; font-size: 16px; font-weight: bold;">
+          Ahora: <span style="color: red;">{{ formatearNumero(calcularPrecioConDescuento(product)) }}</span> <span style="color: green;"> $</span>
+        </p>
+
+        </div>
+
+
+
+
+
+
+        <!-- <div style="margin-top: 20px;">
+          <label style="font-size: 16px; margin-right: 10px;">Caja:</label>
+          <mat-checkbox [disabled]="product.unidadMedida === 'Unitario'"
+            [(ngModel)]="precioPorCajaSeleccionado[product.idProducto]" (change)="calcularSubtotal(product)">
+          </mat-checkbox>
+
+        </div> -->
+
+
+
+        <!-- <p>Descuento: {{ formatearNumero(product.descuentos) }}  <i class="fas fa-percent descuento-icon"></i></p> -->
+        <!-- <p>Descuento: {{ formatearNumero(product.descuentos) }} <mat-icon class="descuento-icon">percent</mat-icon> </p> -->
+        <!-- <p>Ahora: {{ formatearNumero(calcularPrecioConDescuento(product)) }} $</p> -->
+
+        <div style="margin-top: 10px;">
+          <!-- <button mat-icon-button class="carrito" (click)="addToCart(product)">
+            <i class="fas fa-shopping-cart"></i>
+          </button> -->
+          <!-- <button mat-icon-button class="carrito"
+            (click)="addToCart(product, precioPorCajaSeleccionado[product.idProducto])">
+            <i class="fas fa-shopping-cart"></i>
+          </button> -->
+
+          <!-- <button (click)="createPreference()">Pagar con Mercado Pago</button> -->
+          <!-- <button (click)="pay()">Pagar con Nequi</button> -->
+          <!-- <button (click)="paypal()">Pagar con Paypal</button> -->
+          <!-- <button (click)="makePayment()">Pagar con Mercado Pago</button> -->
+
+
+        </div>
+        <div class="social-buttons" style="margin-top: 10px;">
+          <button mat-icon-button class="whatsapp-button" (click)="abrirWhatsApp(product)" matTooltip="Más Información">
+            <i class="fab fa-whatsapp"></i>
+          </button>
+          <button mat-icon-button class="facebook" (click)="abrirFacebook(product)" matTooltip="Más Información">
+            <i class="fab fa-facebook"></i>
+          </button>
+          <button mat-icon-button class="instagram" (click)="abrirInstagram(product)" matTooltip="Más Información">
+            <i class="fab fa-instagram"></i>
+          </button>
+        </div>
+
+
+      </div>
+    </mat-card>
+
+  </div>
+  <br>
+
+  <!-- <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+    <mat-paginator [length]="totalProductos" [pageSize]="pageSize" (page)="onPageChangeCard($event)"
+      class="custom-paginator" [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div> -->
+  <!-- <div class="minimalist-paginator">
+    <mat-paginator [length]="totalProductos"
+                   [pageSize]="pageSize"
+                   (page)="onPageChangeCard($event)"
+                   class="custom-paginator"
+                   [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div> -->
+
+  <div class="minimalist-paginator">
+    <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+
+    <button mat-icon-button class="pasar" (click)="firstPage()"
+            matTooltip="Primera página"
+            matTooltipPosition="above"
+            [disabled]="currentPage === 1">
+      <mat-icon>first_page</mat-icon>
+    </button>
+
+    <button mat-icon-button class="pasar" (click)="previousPage()"
+            matTooltip="Página anterior"
+            matTooltipPosition="above"
+            [disabled]="currentPage === 1">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+
+    <button mat-icon-button class="pasar" (click)="nextPage()"
+            matTooltip="Siguiente página"
+            matTooltipPosition="above"
+            [disabled]="currentPage === totalPages">
+      <mat-icon>navigate_next</mat-icon>
+    </button>
+
+    <button mat-icon-button class="pasar" (click)="lastPage()"
+            matTooltip="Última página"
+            matTooltipPosition="above"
+            [disabled]="currentPage === totalPages">
+      <mat-icon>last_page</mat-icon>
+    </button>
+  </div>
+
+
+ <!-- Este div servirá para empujar el contenido -->
+ <div class="content-spacer"></div>
+
+ <!-- Segundo paginador (debería aparecer al final) -->
+ <!-- <div class="minimalist-paginator2 mobile-paginator"> -->
+ <div class="minimalist-paginator2">
+   <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+
+   <button mat-icon-button class="pasar" (click)="firstPage()"
+           matTooltip="Primera página"
+
+           [disabled]="currentPage === 1">
+     <mat-icon>first_page</mat-icon>
+   </button>
+
+   <button mat-icon-button class="pasar" (click)="previousPage()"
+           matTooltip="Página anterior"
+
+           [disabled]="currentPage === 1">
+     <mat-icon>navigate_before</mat-icon>
+   </button>
+
+   <button mat-icon-button class="pasar" (click)="nextPage()"
+           matTooltip="Siguiente página"
+
+           [disabled]="currentPage === totalPages">
+     <mat-icon>navigate_next</mat-icon>
+   </button>
+
+   <button mat-icon-button class="pasar" (click)="lastPage()"
+           matTooltip="Última página"
+
+           [disabled]="currentPage === totalPages">
+     <mat-icon>last_page</mat-icon>
+   </button>
+ </div>
+
+
+</mat-card>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <!-- <mat-paginator [length]="totalProductos" [pageSize]="pageSize" (page)="onPageChangeCard($event)"
+  class="custom-paginator">
+  </mat-paginator> -->
+  <!-- <mat-paginator [length]="totalProductos" [pageSize]="pageSize" (page)="onPageChangeCard($event)"
+    class="custom-paginator" [showFirstLastButtons]="true">
+  </mat-paginator> -->
+
+
+  <!-- <mat-form-field appearance="fill" class="page-selector" *ngIf="totalProductos > 0">
+    <mat-label>Ir a página:</mat-label>
+    <mat-select [(value)]="currentPage" (selectionChange)="onPageSelected($event)">
+      <mat-option *ngFor="let page of pagesArray" [value]="page">
+        {{ page }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+
+</div>
+
+<footer class="footer">
+  <p>Copyright &copy; 2024 - Hecho con orgullo en Colombia. Todos los derechos reservados.</p>
+</footer>

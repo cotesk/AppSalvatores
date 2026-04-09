@@ -1,0 +1,182 @@
+.titulo {
+  text-align: center; /* Centrar el título */
+  margin-bottom: 20px; /* Espacio debajo del título */
+  font-size: 26px; /* Tamaño de fuente más grande */
+  color: #1b1b1b; /* Color de texto más oscuro */
+}
+
+.formulario {
+  background: #fff; /* Fondo blanco para el formulario */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 20px; /* Espaciado interno */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para el formulario */
+  max-width: 400px; /* Ancho máximo del formulario */
+  margin: 0 auto; /* Centramos el formulario */
+}
+
+
+.campo-id {
+  width: 100%; /* Asegura que los campos ocupen todo el ancho del formulario */
+  margin-bottom: 30px; /* Espacio entre los campos */
+}
+
+.campo-busqueda {
+  width: 100%;
+
+}
+.campo-correo {
+  width: 100%;
+  margin-bottom: 30px;
+
+}
+
+.icono-compra {
+  color: #1976d2; /* Azul para representar información sobre la compra */
+}
+
+.icono-reembolso {
+  color: #d32f2f; /* Rojo para representar el reembolso */
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+
+
+.mat-form-field {
+  margin-bottom: 15px; /* Espaciado inferior entre los campos del formulario */
+}
+
+/* Icono en el mat-select */
+.icono {
+  margin-right: 8px; /* Espaciado a la derecha del icono */
+  color: #555; /* Color del icono */
+}
+
+
+.table-container {
+  width: 100%; /* Asegura que las tablas usen todo el ancho del contenedor */
+  margin: 20px 0; /* Espaciado entre el formulario y las tablas */
+  overflow: auto; /* Asegura que el contenido se mantenga dentro del contenedor */
+}
+
+h3.detalle {
+  margin-top: 20px; /* Espacio adicional antes del encabezado de la tabla */
+  text-align: center; /* Centrar el texto del encabezado */
+}
+
+.table-container table {
+  width: 100%; /* Asegura que la tabla use todo el ancho del contenedor */
+  max-width: 100%; /* Previene que se exceda del contenedor */
+  border-collapse: collapse; /* Combina bordes de las celdas */
+}
+
+.centrar-tabla .mat-header-cell,
+.centrar-tabla .mat-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  width: 100%; /* Asegura que el botón ocupe todo el ancho */
+  padding: 12px; /* Espaciado interno del botón */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño de fuente del botón */
+}
+
+button.agregar:hover {
+  background-color: rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+
+button.agregar[disabled] {
+  background-color: #ccc; /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666; /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc; /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}
+
+
+::ng-deep .mat-mdc-paginator-icon {
+
+  fill: #2196f3 !important;
+}
+
+::ng-deep .mat-mdc-icon-button[disabled] .mat-mdc-paginator-icon {
+  fill: rgb(169, 169, 169) !important;
+}
+
+.circular-button {
+  background-color: #ff9800;
+  /* Cambia según sea necesario */
+  border-radius: 50%;
+  /* Forma circular */
+  width: 40px;
+  /* Ajusta el tamaño */
+  height: 40px;
+  /* Ajusta el tamaño */
+  display: flex;
+  /* Para centrar el contenido */
+  justify-content: center;
+  /* Centra horizontalmente */
+  align-items: center;
+  /* Centra verticalmente */
+  margin-left: 5px;
+  /* Espaciado entre el estado y el botón */
+}
+
+.circular-button mat-icon {
+  color: white;
+  /* Color del icono */
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  /* Para ocupar toda la altura de la celda */
+}
+
+.footer {
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  background-color: #555;
+  padding: 10px;
+  margin:20px -30px 110px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .footer {
+    font-size: 10px;
+    position: relative;
+    left: 10px; /* Salir del contenedor principal */
+    width: calc(100% + 5px); /* Hacerlo más largo que el mat-card */
+    background-color: #333; /* Cambiar color si es necesario */
+  }
+
+  .titulo {
+    font-size: 22px; /* Ajustar el tamaño del título en móviles */
+  }
+
+  .formulario {
+    max-width: 95%; /* Permitir más ancho en móviles */
+  }
+
+  button.agregar {
+    font-size: 14px; /* Tamaño de fuente reducido para el botón en móviles */
+    padding: 10px; /* Reducir el padding */
+  }
+
+}

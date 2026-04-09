@@ -1,0 +1,64 @@
+.titulo-formulario {
+  font-weight: 500;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #333;
+}
+
+.formulario-pedido {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: auto;
+  padding: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.check-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+}
+
+.botones-accion {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.icon-local {
+  color: #4caf50;
+}
+
+.icon-domi {
+  color: #2196f3;
+}
+
+.icon-reco {
+  color: #ff9800;
+}
+
+button[color="warn"]:hover {
+  background-color: #9e3434; /* Cambia el color al pasar el ratón sobre el botón */
+}
+button.agregar {
+  background-color: #3351aa; /* Fondo del botón Cancelar */
+  color: #fff; /* Color del texto del botón Cancelar */
+}
+button.agregar:hover {
+  background-color:  rgb(79, 96, 113); /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+button.agregar[disabled] {
+  background-color: #ccc; /* Fondo del botón en gris cuando está deshabilitado */
+  color: #666; /* Color del texto en gris cuando está deshabilitado */
+}
+
+button.agregar[disabled]:hover {
+  background-color: #ccc; /* Mantener el color de fondo en gris al pasar el ratón sobre el botón deshabilitado */
+}
