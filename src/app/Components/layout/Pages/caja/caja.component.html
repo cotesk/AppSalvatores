@@ -6,7 +6,7 @@
   <mat-card-title>
 
     <mat-card-title class="agregarBoton">
-      <button mat-raised-button class="agregar" (click)="nuevaCaja()">
+      <button mat-raised-button class="agregar" [disabled]="bloquearOpciones" (click)="nuevaCaja()" >
         <mat-icon mat-list-icon>point_of_sale</mat-icon>Abrir Caja
       </button>
     </mat-card-title>
@@ -166,8 +166,7 @@
 
     <mat-card-content class="dashboard-card-content">
 
-
-      <div class="table-container">
+      <div class="table-container" >
 
         <table mat-table [dataSource]="dataListaCaja">
 
@@ -292,7 +291,7 @@
 
       <!-- <h2 style="margin-top: 40px; text-align: center;">Caja General</h2> -->
 
-      <div class="table-container">
+      <div class="table-container" *ngIf="bloquearOpciones==false">
         <table mat-table [dataSource]="dataListaCajaGeneral" class="mat-elevation-z8">
 
           <ng-container matColumnDef="idCaja">
@@ -427,7 +426,7 @@
 
       <!-- <h2 style="margin-top: 40px; text-align: center;">Caja General</h2> -->
 
-      <div class="table-container">
+      <div class="table-container" *ngIf="bloquearOpciones==false">
         <table mat-table [dataSource]="dataListaCajaGeneral" class="mat-elevation-z8">
 
           <ng-container matColumnDef="idCaja">
@@ -577,5 +576,5 @@
 
 
 <footer class="footer">
-  <p>Copyright &copy; 2025 - Hecho con orgullo en Colombia. Todos los derechos reservados.</p>
+  <p>Copyright &copy; 2026 - Hecho con orgullo en Colombia. Todos los derechos reservados.</p>
 </footer>

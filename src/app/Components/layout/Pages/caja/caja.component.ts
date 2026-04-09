@@ -53,6 +53,8 @@ export class CajaComponent implements OnInit {
   searchTerm = '';
 
   idUsuarioCajaGeneral: any
+  bloquearOpciones: boolean = false;
+
 
   constructor(
     private dialog: MatDialog,
@@ -60,7 +62,24 @@ export class CajaComponent implements OnInit {
     private _utilidadServicio: UtilidadService,
     private empresaService: EmpresaService,
     private _usuarioServicio: UsuariosService,
-  ) { }
+  ) {
+
+
+    const usuarioString = localStorage.getItem('usuario');
+    const bytes = CryptoJS.AES.decrypt(usuarioString!, this.CLAVE_SECRETA);
+    const datosDesencriptados = bytes.toString(CryptoJS.enc.Utf8);
+    const usuario = JSON.parse(datosDesencriptados);
+
+    if (usuario.rolDescripcion == "Administrador") {
+      this.bloquearOpciones = false;
+    } else if (usuario.rolDescripcion == "Empleado") {
+      this.bloquearOpciones = true;
+    } else {
+      this.bloquearOpciones = true;
+    }
+
+
+  }
   //original
   // obtenerCaja() {
   //   this._CajaServicio.lista().subscribe({
@@ -315,58 +334,119 @@ export class CajaComponent implements OnInit {
   // }
   obtenerCaja() {
 
+    const usuarioString = localStorage.getItem('usuario');
+    const bytes = CryptoJS.AES.decrypt(usuarioString!, this.CLAVE_SECRETA);
+    const datosDesencriptados = bytes.toString(CryptoJS.enc.Utf8);
+    const usuario = JSON.parse(datosDesencriptados);
 
-    this._CajaServicio.listaPaginada(this.page, this.pageSize, this.searchTerm).subscribe({
-      next: (data) => {
-        if (data && data.data && data.data.length > 0) {
-          this.totalCategorias = data.total;
-          this.totalPages = data.totalPages;
-          // this.dataListaCaja.data = data.data;
-          this.dataListaCaja.data = data.data.filter((caja: Caja) => caja.tipoCaja !== 'General');
-          // console.log("Cajas",this.dataListaCaja.data);
-        } else {
-          this.totalCategorias = 0; // Reinicia el total de categorías si no hay datos
-          this.totalPages = 0; // Reinicia el total de páginas si no hay datos
-          this.dataListaCaja.data = []; // Limpia los datos existentes
-          // Swal.fire({
-          //   icon: 'warning',
-          //   title: 'Advertencia',
-          //   text: 'No se encontraron datos',
-          // });
-        }
-      },
-      error: (e) => {
-        this.totalCategorias = 0; // Reinicia el total de categorías en caso de error
-        this.totalPages = 0; // Reinicia el total de páginas en caso de error
-        this.dataListaCaja.data = [];
-        let idUsuario: number = 0;
-        const usuarioString = localStorage.getItem('usuario');
-        const bytes = CryptoJS.AES.decrypt(usuarioString!, this.CLAVE_SECRETA);
-        const datosDesencriptados = bytes.toString(CryptoJS.enc.Utf8);
-        if (datosDesencriptados) {
-          const usuario = JSON.parse(datosDesencriptados);
-          idUsuario = usuario.idUsuario;
+    if (usuario.rolDescripcion == "Administrador") {
+      this._CajaServicio.listaPaginada(this.page, this.pageSize, this.searchTerm).subscribe({
+        next: (data) => {
+          if (data && data.data && data.data.length > 0) {
+            this.totalCategorias = data.total;
+            this.totalPages = data.totalPages;
+            // this.dataListaCaja.data = data.data;
+            this.dataListaCaja.data = data.data.filter((caja: Caja) => caja.tipoCaja !== 'General');
+            // console.log("Cajas",this.dataListaCaja.data);
+          } else {
+            this.totalCategorias = 0; // Reinicia el total de categorías si no hay datos
+            this.totalPages = 0; // Reinicia el total de páginas si no hay datos
+            this.dataListaCaja.data = []; // Limpia los datos existentes
+            // Swal.fire({
+            //   icon: 'warning',
+            //   title: 'Advertencia',
+            //   text: 'No se encontraron datos',
+            // });
+          }
+        },
+        error: (e) => {
+          this.totalCategorias = 0; // Reinicia el total de categorías en caso de error
+          this.totalPages = 0; // Reinicia el total de páginas en caso de error
+          this.dataListaCaja.data = [];
+          let idUsuario: number = 0;
+          const usuarioString = localStorage.getItem('usuario');
+          const bytes = CryptoJS.AES.decrypt(usuarioString!, this.CLAVE_SECRETA);
+          const datosDesencriptados = bytes.toString(CryptoJS.enc.Utf8);
+          if (datosDesencriptados) {
+            const usuario = JSON.parse(datosDesencriptados);
+            idUsuario = usuario.idUsuario;
 
-          this._usuarioServicio.obtenerUsuarioPorId(idUsuario).subscribe(
-            (usuario: any) => {
-              let refreshToken = usuario.refreshToken;
-              this._usuarioServicio.renovarToken(refreshToken).subscribe(
-                (response: any) => {
-                  localStorage.setItem('authToken', response.token);
-                  this.obtenerCaja();
-                },
-                (error: any) => {
-                  console.error('Error al actualizar el token:', error);
-                }
-              );
-            },
-            (error: any) => {
-              console.error('Error al obtener el usuario:', error);
-            }
-          );
+            this._usuarioServicio.obtenerUsuarioPorId(idUsuario).subscribe(
+              (usuario: any) => {
+                let refreshToken = usuario.refreshToken;
+                this._usuarioServicio.renovarToken(refreshToken).subscribe(
+                  (response: any) => {
+                    localStorage.setItem('authToken', response.token);
+                    this.obtenerCaja();
+                  },
+                  (error: any) => {
+                    console.error('Error al actualizar el token:', error);
+                  }
+                );
+              },
+              (error: any) => {
+                console.error('Error al obtener el usuario:', error);
+              }
+            );
+          }
         }
-      }
-    });
+      });
+    } else {
+       this.searchTerm = usuario.nombreCompleto; 
+      this._CajaServicio.listaPaginada(this.page, this.pageSize, this.searchTerm).subscribe({
+        next: (data) => {
+          if (data && data.data && data.data.length > 0) {
+            this.totalCategorias = data.total;
+            this.totalPages = data.totalPages;
+            // this.dataListaCaja.data = data.data;
+            this.dataListaCaja.data = data.data.filter((caja: Caja) => caja.tipoCaja !== 'General');
+            // console.log("Cajas",this.dataListaCaja.data);
+          } else {
+            this.totalCategorias = 0; // Reinicia el total de categorías si no hay datos
+            this.totalPages = 0; // Reinicia el total de páginas si no hay datos
+            this.dataListaCaja.data = []; // Limpia los datos existentes
+            // Swal.fire({
+            //   icon: 'warning',
+            //   title: 'Advertencia',
+            //   text: 'No se encontraron datos',
+            // });
+          }
+        },
+        error: (e) => {
+          this.totalCategorias = 0; // Reinicia el total de categorías en caso de error
+          this.totalPages = 0; // Reinicia el total de páginas en caso de error
+          this.dataListaCaja.data = [];
+          let idUsuario: number = 0;
+          const usuarioString = localStorage.getItem('usuario');
+          const bytes = CryptoJS.AES.decrypt(usuarioString!, this.CLAVE_SECRETA);
+          const datosDesencriptados = bytes.toString(CryptoJS.enc.Utf8);
+          if (datosDesencriptados) {
+            const usuario = JSON.parse(datosDesencriptados);
+            idUsuario = usuario.idUsuario;
+
+            this._usuarioServicio.obtenerUsuarioPorId(idUsuario).subscribe(
+              (usuario: any) => {
+                let refreshToken = usuario.refreshToken;
+                this._usuarioServicio.renovarToken(refreshToken).subscribe(
+                  (response: any) => {
+                    localStorage.setItem('authToken', response.token);
+                    this.obtenerCaja();
+                  },
+                  (error: any) => {
+                    console.error('Error al actualizar el token:', error);
+                  }
+                );
+              },
+              (error: any) => {
+                console.error('Error al obtener el usuario:', error);
+              }
+            );
+          }
+        }
+      });
+    }
+
+
   }
 
   obtenercajaGeneral() {
