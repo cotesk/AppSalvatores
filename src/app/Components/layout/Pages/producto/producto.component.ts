@@ -172,7 +172,8 @@ export class ProductoComponent implements OnInit, AfterViewInit, OnDestroy {
           // });
           this.totalProductos = data.total;
           this.totalPages = Math.ceil(this.totalProductos / this.pageSize);
-          this.dataListaProductos = data.data;
+          this.dataListaProductos = new MatTableDataSource(data.data);
+
         } else {
           this.totalProductos = 0; // Reinicia el total de categorías si no hay datos
           this.totalPages = 0; // Reinicia el total de páginas si no hay datos
@@ -2169,21 +2170,18 @@ export class ProductoComponent implements OnInit, AfterViewInit, OnDestroy {
       cancelButtonText: 'No, volver'
     }).then((resultado) => {
       if (resultado.isConfirmed) {
-        // this.eliminarProductoLocal(producto);
+        //  this.eliminarProductoLocal(producto);
         this.eliminarProductoServidor(producto);
       }
     });
   }
 
   eliminarProductoLocal(producto: Producto) {
-    // Verificar que dataListaProductos.data sea un array válido
     if (Array.isArray(this.dataListaProductos?.data)) {
-      const index = this.dataListaProductos.data.indexOf(producto);
-      if (index !== -1) {
-        this.dataListaProductos.data.splice(index, 1);
-        // Actualizar la fuente de datos de la tabla después de eliminar el producto
-        this.dataListaProductos.data = [...this.dataListaProductos.data];
-      }
+
+      this.dataListaProductos.data = this.dataListaProductos.data
+        .filter(p => p.idProducto !== producto.idProducto);
+
     }
   }
 
@@ -2191,6 +2189,7 @@ export class ProductoComponent implements OnInit, AfterViewInit, OnDestroy {
     this._productoServicio.eliminar(producto.idProducto).subscribe({
       next: (data) => {
         if (data.status) {
+          // this.eliminarProductoLocal(producto);
           Swal.fire({
             icon: 'success',
             title: 'Producto Eliminado',
