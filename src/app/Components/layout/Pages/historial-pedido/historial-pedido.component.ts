@@ -511,11 +511,55 @@ export class HistorialPedidoComponent implements OnInit, OnDestroy {
         this.innerWidth = window.innerWidth;
 
         // Si es móvil → enviar directamente sin ventana
-        if (this.innerWidth <= 768) {
-          // this.signalRService.enviarTicket(contenido);
-          return; // salir si es móvil
-        }
+        // if (this.innerWidth <= 768) {
+        //   // this.signalRService.enviarTicket(contenido);
+        //   return; // salir si es móvil
+        // }
 
+
+
+        if (this.esMovil()) {
+
+          const contenido = this.generarContenidoTicket(pedido, datosDomicilio);
+
+          // 📏 Crear instancia temporal para calcular líneas
+          const tempDoc = new jsPDF({
+            unit: 'mm',
+            format: [80, 200] // base temporal
+          });
+
+          tempDoc.setFont('courier', 'normal');
+          tempDoc.setFontSize(8);
+
+          // 🔥 Divide el texto en líneas según el ancho del ticket
+          const lineas = tempDoc.splitTextToSize(contenido, 75);
+
+          // 📏 Calcular altura dinámica
+          const altura = (lineas.length * 4) + 10; // +10 margen inferior
+
+          // 🧾 Crear PDF final con altura real
+          const doc = new jsPDF({
+            unit: 'mm',
+            format: [80, altura]
+          });
+
+          doc.setFont('courier', 'normal');
+          doc.setFontSize(8);
+
+          // 🖨️ Pintar contenido
+          doc.text(lineas, 2, 5);
+
+          // 📥 Descargar automáticamente
+          doc.save(`ticket_${pedido.idPedido}.pdf`);
+
+          Swal.fire({
+            icon: 'success',
+            title: 'PDF descargado',
+            text: 'El ticket se descargó correctamente'
+          });
+
+          return;
+        }
 
         // Abrir ventana de impresión
         // const ventana = window.open(

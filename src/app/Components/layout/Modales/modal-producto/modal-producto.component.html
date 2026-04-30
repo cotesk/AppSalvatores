@@ -99,40 +99,6 @@
       </mat-form-field>
     </div>
 
-    <!-- Otros campos del formulario -->
-    <!-- 
-    <div class="row">
-      <mat-form-field class="full-width" appearance="fill" style="width: 100%; margin-bottom: 1em;">
-        <mat-label>Caracteristica</mat-label>
-        <textarea matInput autocomplete="off" formControlName="caracteristicas" rows="3"></textarea>
-        <mat-icon matSuffix>fit_screen</mat-icon>
-      </mat-form-field>
-
-    </div> -->
-
-
-    <!-- <div class="row">
-      <mat-form-field class="full-width" appearance="fill" style="width: 100%; margin-bottom: 1em;">
-        <mat-label>Código de Barras</mat-label>
-        <input matInput autocomplete="off" formControlName="codigo" pattern="[0-9]*" maxlength="18">
-        <div matSuffix class="suffix-container">
-          <button mat-icon-button matTooltip="Generar código aleatorio" (click)="generarCodigoAleatorio()"
-            aria-label="Generar código aleatorio">
-            <mat-icon class="icon-black">autorenew</mat-icon>
-          </button>
-          <mat-icon class="icon-black fas fa-barcode"></mat-icon>
-        </div>
-        <mat-error *ngIf="formularioProducto.get('codigo')?.hasError('pattern')">
-          Solo se permiten números.
-        </mat-error>
-        <mat-error *ngIf="formularioProducto.get('codigo')?.hasError('maxlength')">
-          El número no puede exceder de 18 dígitos.
-        </mat-error>
-      </mat-form-field>
-
-
-  
-    </div> -->
 
 
     <div class="row">
@@ -166,8 +132,12 @@
             <mat-icon color="warn">restaurant</mat-icon> Comida
           </mat-option>
 
-             <mat-option value="Heladeria">
+          <mat-option value="Heladeria">
             <mat-icon color="primary">icecream</mat-icon> Heladeria
+          </mat-option>
+
+          <mat-option value="Empacados">
+            <mat-icon color="accent">inventory_2</mat-icon> Empacados
           </mat-option>
 
         </mat-select>
@@ -178,7 +148,7 @@
 
     <div class="row">
 
-      <mat-form-field class="full-width" appearance="fill"  style="width: 100%; margin-bottom: 1em;">
+      <mat-form-field class="full-width" appearance="fill" style="width: 100%; margin-bottom: 1em;">
         <mat-label>Tiene Porcion</mat-label>
         <mat-select formControlName="porcion" (selectionChange)="onPorcionChange($event.value)">
           <mat-option value="1">
@@ -192,7 +162,8 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field  *ngIf="mostrarPrecioPorcion" class="full-width" appearance="fill" style="width: 100%; margin-bottom: 1em;">
+      <mat-form-field *ngIf="mostrarPrecioPorcion" class="full-width" appearance="fill"
+        style="width: 100%; margin-bottom: 1em;">
         <mat-label>Precio por porcion</mat-label>
         <input matInput autocomplete="off" maxlength="15" formControlName="precioPorPorcionTexto"
           (input)="formatearNumero($event, 'precioPorPorcionTexto')">
